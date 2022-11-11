@@ -3,6 +3,7 @@ package com.eindopdracht.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.eindopdracht.game.control.Assets;
 import com.eindopdracht.game.screens.GameScreen;
 import com.eindopdracht.game.screens.LoadingScreen;
 import com.eindopdracht.game.screens.MainMenu;
@@ -14,6 +15,8 @@ public class EindOpdracht extends Game {
 	Screen loadingScreen;
 	Screen gameScreen;
 	Screen mainMenu;
+	//Assets
+	public Assets assets;
 	
 	@Override
 	public void create () {
@@ -22,6 +25,12 @@ public class EindOpdracht extends Game {
 		loadingScreen = new LoadingScreen(this);
 		gameScreen = new GameScreen(this);
 		mainMenu = new MainMenu(this);
+
+		assets = new Assets(this);
+		assets.queueMainMenu();
+
+		setScreen(loadingScreen);
+
 	}
 
 	//Render method

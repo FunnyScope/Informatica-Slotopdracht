@@ -1,10 +1,14 @@
 package com.eindopdracht.game.control;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.gameobject.*;
 import java.util.LinkedList;
 
 //Handles *all* game objects
 public class Handler {
+
+
 
     //Array of all game objects
     private LinkedList<GameObject> gameObjects = new LinkedList<>();
@@ -14,16 +18,16 @@ public class Handler {
     }
 
     //Updates all game objects.
-    public void update() {
+    public void update(SpriteBatch batch) {
         for (GameObject gameObject : gameObjects) {
-            gameObject.update();
+            gameObject.update(batch);
         }
     }
 
     //Draws all game objects
-    public void draw() {
+    public void draw(SpriteBatch batch) {
         for (GameObject gameObject : gameObjects) {
-            gameObject.draw();
+            gameObject.draw(batch);
         }
     }
 
