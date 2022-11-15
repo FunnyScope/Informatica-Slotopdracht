@@ -1,6 +1,10 @@
 package com.eindopdracht.game.control;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+<<<<<<< Updated upstream
+=======
+import com.badlogic.gdx.utils.Array;
+>>>>>>> Stashed changes
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.gameobject.*;
 import java.util.LinkedList;
@@ -8,13 +12,17 @@ import java.util.LinkedList;
 //Handles *all* game objects
 public class Handler {
 
+<<<<<<< Updated upstream
 
+=======
+    private WorldHandler worldHandler;
+>>>>>>> Stashed changes
 
     //Array of all game objects
-    private LinkedList<GameObject> gameObjects = new LinkedList<>();
+    private Array<GameObject> gameObjects = new Array<>();
 
     public Handler() {
-
+        worldHandler = new WorldHandler();
     }
 
     //Updates all game objects.
@@ -36,10 +44,9 @@ public class Handler {
         return gameObjects.get(index);
     }
 
-    //TODO: figure out if this can be done the cool, smart way
-    //Which probably wouldn't work that terrifically well, but it'd be cool
-    public void addGameObject() {
-
+    //Adds a game object to the list
+    public void addGameObject(GameObject gameObject) {
+        gameObjects.add(gameObject);
     }
 
 

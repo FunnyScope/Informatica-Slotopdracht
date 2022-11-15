@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.eindopdracht.game.EindOpdracht;
+import com.eindopdracht.game.control.*;
 
 public class GameScreen implements Screen {
 
@@ -18,6 +19,12 @@ public class GameScreen implements Screen {
     private World world;
     private Box2DDebugRenderer debugRenderer;
 
+<<<<<<< Updated upstream
+=======
+    private Handler handler;
+    private GameObjectCreator gameObjectCreator;
+
+>>>>>>> Stashed changes
     public GameScreen(EindOpdracht game) {
         this.game = game;
         camera.setToOrtho(false, 320, 180);
@@ -40,6 +47,11 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
         //All commands that draw things on the screen go between this
         game.batch.end();
     }
