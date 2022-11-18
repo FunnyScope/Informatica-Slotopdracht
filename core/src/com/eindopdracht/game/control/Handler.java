@@ -2,18 +2,26 @@ package com.eindopdracht.game.control;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
 import com.badlogic.gdx.utils.Array;
 >>>>>>> Stashed changes
 import com.eindopdracht.game.EindOpdracht;
+=======
+import com.badlogic.gdx.utils.Array;
+>>>>>>> Stashed changes
 import com.eindopdracht.game.gameobject.*;
-import java.util.LinkedList;
+
 
 //Handles *all* game objects
 public class Handler {
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+    private WorldHandler worldHandler;
+>>>>>>> Stashed changes
 =======
     private WorldHandler worldHandler;
 >>>>>>> Stashed changes
@@ -21,6 +29,7 @@ public class Handler {
     //Array of all game objects
     private Array<GameObject> gameObjects = new Array<>();
 
+<<<<<<< Updated upstream
     public Handler() {
         worldHandler = new WorldHandler();
     }
@@ -29,6 +38,17 @@ public class Handler {
     public void update(SpriteBatch batch) {
         for (GameObject gameObject : gameObjects) {
             gameObject.update(batch);
+=======
+
+    public Handler() {
+        worldHandler = new WorldHandler(this);
+    }
+
+    //Updates all game objects.
+    public void update(float delta) {
+        for (GameObject gameObject : gameObjects) {
+            gameObject.update(delta);
+>>>>>>> Stashed changes
         }
     }
 
@@ -49,5 +69,7 @@ public class Handler {
         gameObjects.add(gameObject);
     }
 
-
+    public WorldHandler getWorldHandler() {
+        return worldHandler;
+    }
 }
