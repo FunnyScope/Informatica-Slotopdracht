@@ -1,17 +1,10 @@
 package com.eindopdracht.game.control;
 
-<<<<<<< Updated upstream
-//Does the box2D things, handles them
-//TODO: make it do the above
-public class WorldHandler {
 
-
-=======
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 //Does the box2D things, handles them
-//TODO: make it do the above
 public class WorldHandler implements ContactListener {
 
     private World world;
@@ -32,6 +25,7 @@ public class WorldHandler implements ContactListener {
         world.dispose();
     }
 
+    //The below governs the interaction between
     @Override
     public void beginContact(Contact contact) {
 
@@ -51,5 +45,5 @@ public class WorldHandler implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
     }
->>>>>>> Stashed changes
+
 }

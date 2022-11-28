@@ -2,12 +2,8 @@ package com.eindopdracht.game.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-<<<<<<< Updated upstream
-=======
 import com.badlogic.gdx.math.MathUtils;
->>>>>>> Stashed changes
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.eindopdracht.game.EindOpdracht;
@@ -16,35 +12,23 @@ import com.eindopdracht.game.control.*;
 public class GameScreen implements Screen {
 
     private EindOpdracht game;
-
     private ExtendViewport viewport;
     private OrthographicCamera camera;
-
-<<<<<<< Updated upstream
-    private World world;
     private Box2DDebugRenderer debugRenderer;
-
-<<<<<<< Updated upstream
-=======
     private Handler handler;
     private GameObjectCreator gameObjectCreator;
-
->>>>>>> Stashed changes
-=======
-    private Box2DDebugRenderer debugRenderer;
-
-    private Handler handler;
-    private GameObjectCreator gameObjectCreator;
-
     private float accumulator = 0;
 
->>>>>>> Stashed changes
     public GameScreen(EindOpdracht game) {
         this.game = game;
+        camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 180);
         viewport = new ExtendViewport(80, 45, camera);
 
         //TODO: box2d initialisation
+
+        handler = new Handler();
+        debugRenderer = new Box2DDebugRenderer();
     }
 
     @Override
@@ -67,18 +51,9 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 0);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-<<<<<<< Updated upstream
-
-        game.batch.begin();
-
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
-        //All commands that draw things on the screen go between this
-        game.batch.end();
-=======
+
 
         game.batch.begin();
 
@@ -88,7 +63,7 @@ public class GameScreen implements Screen {
         game.batch.end();
         handler.update(delta);
         physicsStep(delta);
->>>>>>> Stashed changes
+
     }
 
     @Override
@@ -113,11 +88,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-<<<<<<< Updated upstream
-        world.dispose();
-=======
         handler.getWorldHandler().dispose();
->>>>>>> Stashed changes
         debugRenderer.dispose();
     }
 }
