@@ -1,16 +1,14 @@
 package com.eindopdracht.game.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.eindopdracht.game.control.Handler;
 
 public class Player extends GameObject {
-    private int level = 0, health = 100;
-
-
+    private int level = 0;
+    private float health;
 
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
@@ -27,6 +25,12 @@ public class Player extends GameObject {
 
     @Override
     public void update(float delta) {
+
+        updateStatusEffects();
+
+        body.setLinearVelocity(velX, velY);
+        x = body.getPosition().x;
+        y = body.getPosition().y;
 
 
 
@@ -61,11 +65,11 @@ public class Player extends GameObject {
         this.level = level;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(float health) {
         this.health = health;
     }
 }

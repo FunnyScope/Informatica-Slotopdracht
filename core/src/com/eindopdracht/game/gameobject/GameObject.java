@@ -2,7 +2,9 @@ package com.eindopdracht.game.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.Handler;
+import com.eindopdracht.game.statuseffect.StatusEffect;
 
 public abstract class GameObject {
 
@@ -11,6 +13,8 @@ public abstract class GameObject {
     protected Handler handler;
     protected Body body;
     protected int width, height;
+
+    private Array<StatusEffect> statusEffects;
 
     public GameObject(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
         this.x = x;
@@ -22,6 +26,7 @@ public abstract class GameObject {
         this.handler = handler;
         this.width = width;
         this.height = height;
+        statusEffects = new Array<>();
         createBody();
     }
 
@@ -96,6 +101,22 @@ public abstract class GameObject {
 
     public void setVelY(float velY) {
         this.velY = velY;
+    }
+
+    public void addStatusEffect(StatusEffect statusEffect) {
+        statusEffects.add(statusEffect);
+    }
+    public void removeStatusEffect(int index) {
+        statusEffects.removeIndex(index);
+    }
+    public void removeAllStatusEffects() {
+        statusEffects.clear();
+    }
+    protected void updateStatusEffects() {
+        for (StatusEffect statusEffect:
+             statusEffects) {
+            statusEffect.update(this);
+        }
     }
 
 }

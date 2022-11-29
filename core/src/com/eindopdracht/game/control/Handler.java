@@ -13,6 +13,10 @@ public class Handler {
     //Array of all game objects
     private Array<GameObject> gameObjects = new Array<>();
 
+    public Handler() {
+        worldHandler = new WorldHandler(this);
+    }
+
     //Updates all game objects.
     public void update(float delta) {
         for (GameObject gameObject : gameObjects) {

@@ -37,4 +37,7 @@ public class GameObjectCreator {
     //TODO: add more game objects :D
 
 
+    public Pool<Bullet> getBulletPool() {
+        return bulletPool;
+    }
 }
