@@ -19,16 +19,17 @@ public class GameScreen implements Screen {
     private GameObjectCreator gameObjectCreator;
     private float accumulator = 0;
 
+    private boolean playerExists = false;
+
     public GameScreen(EindOpdracht game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 180);
         viewport = new ExtendViewport(80, 45, camera);
 
-        //TODO: box2d initialisation
-
         handler = new Handler();
         debugRenderer = new Box2DDebugRenderer();
+        gameObjectCreator = new GameObjectCreator(game, handler);
     }
 
     @Override
@@ -47,10 +48,15 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        if(!playerExists) {
+            gameObjectCreator.createPlayer(80, 80);
+            playerExists = true;
+        }
         //Clearing the screen, updating the camera
         ScreenUtils.clear(0, 0, 0, 0);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
+        debugRenderer.render(handler.getWorldHandler().getWorld(), camera.combined);
 
 
 

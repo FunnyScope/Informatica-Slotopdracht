@@ -15,6 +15,7 @@ public class MainMenu implements Screen {
 
     public MainMenu(EindOpdracht game) {
         this.game = game;
+        camera = new OrthographicCamera();
         camera.setToOrtho(false, 320, 180);
         viewport = new ExtendViewport(80, 45, camera);
     }
