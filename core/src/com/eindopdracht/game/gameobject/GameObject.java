@@ -7,6 +7,7 @@ import com.eindopdracht.game.control.Handler;
 import com.eindopdracht.game.statuseffect.StatusEffect;
 import com.eindopdracht.game.statuseffect.StatusEffectID;
 
+
 public abstract class GameObject {
 
     protected float x, y, orientation, velX, velY, health;

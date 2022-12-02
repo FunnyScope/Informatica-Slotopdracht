@@ -37,5 +37,4 @@ public abstract class StatusEffect {
     public void setTickAmount(int tickAmount) {
         this.tickAmount = tickAmount;
     }
-
 }
