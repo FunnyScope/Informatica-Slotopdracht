@@ -10,17 +10,17 @@ import com.eindopdracht.game.statuseffect.StatusEffectID;
 
 public abstract class GameObject {
 
-    protected float x, y, orientation, velX, velY, health;
+    protected float orientation, velX, velY, health;
     protected ID id;
     protected Handler handler;
+    // We use the body's native position vector to track the position of the game object.
     protected Body body;
     protected int width, height;
 
     private Array<StatusEffect> statusEffects;
 
     public GameObject(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
-        this.x = x;
-        this.y = y;
+
         this.orientation = orientation;
         this.velX = velX;
         this.velY = velY;
@@ -28,13 +28,15 @@ public abstract class GameObject {
         this.handler = handler;
         this.width = width;
         this.height = height;
+        health = 100;
         statusEffects = new Array<>();
-        createBody();
+        createBody(x, y);
+        body.setUserData(this);
     }
 
     public abstract void draw(SpriteBatch batch);
     public abstract void update(float delta);
-    public abstract void createBody();
+    public abstract void createBody(float x, float y);
 
 
     public Body getBody() {
@@ -58,19 +60,19 @@ public abstract class GameObject {
     }
 
     public float getX() {
-        return x;
+        return body.getPosition().x;
     }
 
     public void setX(float x) {
-        this.x = x;
+        body.getPosition().x = x;
     }
 
     public float getY() {
-        return y;
+        return body.getPosition().y;
     }
 
     public void setY(float y) {
-        this.y = y;
+        body.getPosition().y = y;
     }
 
     public float getOrientation() {
@@ -134,6 +136,8 @@ public abstract class GameObject {
 
     //TODO: create armour mechanics and such
     public void dealDamage(float damage) {
+        if(hasStatusEffect(StatusEffectID.BulletImmunity))
+            return;
         health -= damage;
     }
 

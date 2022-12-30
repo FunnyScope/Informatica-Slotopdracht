@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.control.*;
+import com.eindopdracht.game.gameobject.Bullet;
+import com.eindopdracht.game.gameobject.ID;
 
 public class GameScreen implements Screen {
 
@@ -24,8 +26,8 @@ public class GameScreen implements Screen {
     public GameScreen(EindOpdracht game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 320, 180);
-        viewport = new ExtendViewport(80, 45, camera);
+        camera.setToOrtho(false, 640, 360);
+        viewport = new ExtendViewport(320, 180, camera);
 
         handler = new Handler();
         debugRenderer = new Box2DDebugRenderer();
@@ -48,11 +50,18 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(!playerExists) {
-            gameObjectCreator.createPlayer(80, 80);
-            playerExists = true;
+        try {
+            // For testing purposes
+            if (!playerExists) {
+                gameObjectCreator.createPlayer(80, 80);
+                gameObjectCreator.createBasicEnemy(240, 240);
+                gameObjectCreator.createBullet(100, 300, (float) (Math.PI * 1.5f));
+                playerExists = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        //Clearing the screen, updating the camera
+        // Clearing the screen, updating the camera
         ScreenUtils.clear(0, 0, 0, 0);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
@@ -62,13 +71,14 @@ public class GameScreen implements Screen {
 
 
         game.batch.begin();
-
+        // Everything that draws on the screen goes here, between begin() and end().
         handler.draw(game.batch);
 
-        //All commands that draw things on the screen go between this
+
         game.batch.end();
         handler.update(delta);
         physicsStep(delta);
+        gameObjectCreator.freeBullets();
 
     }
 

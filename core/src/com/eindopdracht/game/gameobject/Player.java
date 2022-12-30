@@ -28,24 +28,24 @@ public class Player extends GameObject {
         updateStatusEffects(delta);
 
         body.setLinearVelocity(velX, velY);
-        x = body.getPosition().x;
-        y = body.getPosition().y;
-
-
 
     }
 
     @Override
-    public void createBody() {
+    public void createBody(float x, float y) {
+        // Create the definition of the body, which is apparently necessary for box2D
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(x, y);
 
+        // Create the body
         body = handler.getWorldHandler().getWorld().createBody(bodyDef);
 
+        // Create the shape
         PolygonShape hitBox = new PolygonShape();
-        hitBox.setAsBox(width, height);
+        hitBox.setAsBox(width /  2f, height / 2f);
 
+        // Create the fixtureDef, and below that the body's fixture.
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = hitBox;
         fixtureDef.density = 0.5f;
@@ -53,6 +53,7 @@ public class Player extends GameObject {
         fixtureDef.restitution = 0.25f;
 
         body.createFixture(fixtureDef);
+
 
     }
 

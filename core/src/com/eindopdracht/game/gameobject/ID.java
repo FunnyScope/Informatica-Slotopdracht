@@ -4,6 +4,8 @@ package com.eindopdracht.game.gameobject;
 public enum ID {
     player,
     bullet,
+    basicEnemy,
+
 
     //TODO: add more
 }

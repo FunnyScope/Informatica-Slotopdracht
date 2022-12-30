@@ -37,6 +37,10 @@ public class Handler {
         return gameObjects.get(index);
     }
 
+    public Array<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
     //Adds a game object to the list
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
