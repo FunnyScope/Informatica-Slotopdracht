@@ -21,7 +21,7 @@ public class Bullet extends GameObject {
     @Override
     public void update(float delta) {
         body.setTransform(body.getPosition(), orientation);
-        float speed = 150;
+        float speed = 300;
         body.setLinearVelocity((float) (Math.cos(orientation) * speed), (float) (Math.sin(orientation) * speed));
     }
 
