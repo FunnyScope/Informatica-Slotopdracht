@@ -12,6 +12,7 @@ public class BulletStorage {
 
     private Array<Bullet> bulletArray;
     private Handler handler;
+    private int maximum = 64;
 
 
     public BulletStorage(Handler handler) {
@@ -19,6 +20,9 @@ public class BulletStorage {
         bulletArray = new Array<>();
     }
 
+    /**
+     * @return returns a bullet from the array if available, otherwise creates a new bullet.
+     */
     public Bullet obtain() {
 
 
@@ -34,7 +38,14 @@ public class BulletStorage {
         return new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 20, 5);
     }
 
+    /**
+     * @param bullet a bullet game object, which is returned to the bullet array
+     */
     public void free(Bullet bullet) {
+        if(bulletArray.size >= maximum) {
+            return;
+        }
+
         if (bullet == null) {
             throw new IllegalArgumentException("Bullet can't be null");
         } else {

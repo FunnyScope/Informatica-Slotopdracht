@@ -9,12 +9,14 @@ import com.eindopdracht.game.control.Handler;
 
 public class BasicEnemy extends GameObject {
 
-    private final float speed = 10;
-    private Player player;
+    private final Player player;
+    private float timeRemaining = 2;
 
     public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height, Player player) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         this.player = player;
+        maxAmmo = 10;
+        ammoCount = 10;
 
     }
 
@@ -24,15 +26,19 @@ public class BasicEnemy extends GameObject {
     }
 
     private boolean canSeePlayer() {
-        // TODO: Create walls and other obstacles which impede line of sight and bullets
+        // TODO: Create line of sight logic. Probably with sensors and such.
         return true;
     }
 
     @Override
     public void update(float delta) {
-        // TODO: AI things
-        // For now, we merely make this guy move to the player
-        // It only requires some basic vector math, so it'll suffice for testing
+
+        timeRemaining -= delta;
+
+
+        if (ammoCount > maxAmmo) ammoCount = maxAmmo;
+        else if (ammoCount < maxAmmo) ammoCount++;
+
 
         if(!canSeePlayer()) {
             return;
@@ -52,13 +58,16 @@ public class BasicEnemy extends GameObject {
         }
 
         if (!(body.getPosition().dst(player.getBody().getPosition()) > 200)) {
-            //TODO: Create system to fire bullets. Might've been useful to do this beforehand.
+
             body.setLinearVelocity(0, 0);
+
+            shoot(angleRadians);
+
             return;
         }
 
 
-
+        float speed = 10;
         body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
 
     }
@@ -81,5 +90,17 @@ public class BasicEnemy extends GameObject {
         fixtureDef.restitution = 0.25f;
 
         body.createFixture(fixtureDef);
+    }
+
+    @Override
+    protected void shoot(float angleRadians) {
+
+        //TODO: Fix the bullet being spawned inside of the body of the basicenemy
+        if(ammoCount > 0 && timeRemaining <= 0) {
+            ammoCount--;
+            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x, body.getPosition().y, angleRadians);
+            timeRemaining = 2;
+        }
+
     }
 }

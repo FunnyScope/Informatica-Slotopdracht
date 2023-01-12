@@ -5,6 +5,7 @@ public enum ID {
     player,
     bullet,
     basicEnemy,
+    wall,
 
 
     //TODO: add more

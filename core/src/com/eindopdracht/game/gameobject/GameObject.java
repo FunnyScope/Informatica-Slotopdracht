@@ -15,7 +15,7 @@ public abstract class GameObject {
     protected Handler handler;
     // We use the body's native position vector to track the position of the game object.
     protected Body body;
-    protected int width, height;
+    protected int width, height, maxAmmo = 30, ammoCount = 30;
 
     private Array<StatusEffect> statusEffects;
 
@@ -37,6 +37,7 @@ public abstract class GameObject {
     public abstract void draw(SpriteBatch batch);
     public abstract void update(float delta);
     public abstract void createBody(float x, float y);
+    protected abstract void shoot(float angleRadians);
 
 
     public Body getBody() {
@@ -105,6 +106,22 @@ public abstract class GameObject {
 
     public void setVelY(float velY) {
         this.velY = velY;
+    }
+
+    public int getMaxAmmo() {
+        return maxAmmo;
+    }
+
+    public void setMaxAmmo(int maxAmmo) {
+        this.maxAmmo = maxAmmo;
+    }
+
+    public int getAmmoCount() {
+        return ammoCount;
+    }
+
+    public void setAmmoCount(int ammoCount) {
+        this.ammoCount = ammoCount;
     }
 
     public void addStatusEffect(StatusEffect statusEffect) {

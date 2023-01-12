@@ -3,19 +3,23 @@ package com.eindopdracht.game.control;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.*;
+import com.eindopdracht.game.screens.GameScreen;
 
 
 //Handles *all* game objects
 public class Handler {
 
+    public final GameScreen hub;
     private WorldHandler worldHandler;
 
     //Array of all game objects
     private Array<GameObject> gameObjects = new Array<>();
 
-    public Handler() {
+    public Handler(GameScreen hub) {
+        this.hub = hub;
         worldHandler = new WorldHandler(this);
     }
+
 
     //Updates all game objects.
     public void update(float delta) {

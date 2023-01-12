@@ -60,10 +60,10 @@ public class LevelCreator {
 
         try {
             switch(enemyIDArray[selectID]) {
-                case basicEnemy -> {
+                case basicEnemy:
                     gameObjectCreator.createBasicEnemy(random.nextInt(levelWidth), random.nextInt(levelHeight));
                     difficulty -= 1;
-                }
+                    break;
 
 
             }

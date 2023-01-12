@@ -21,7 +21,7 @@ public class Bullet extends GameObject {
     @Override
     public void update(float delta) {
         body.setTransform(body.getPosition(), orientation);
-        float speed = 300;
+        float speed = 400;
         body.setLinearVelocity((float) (Math.cos(orientation) * speed), (float) (Math.sin(orientation) * speed));
     }
 
@@ -50,6 +50,12 @@ public class Bullet extends GameObject {
         body.isBullet();
 
 
+    }
+
+
+    @Override
+    protected void shoot(float angleRadians) {
+        //Bullet shoots bullet? Hell yeah
     }
 
 

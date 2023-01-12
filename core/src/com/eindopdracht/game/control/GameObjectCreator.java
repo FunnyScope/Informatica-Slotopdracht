@@ -4,6 +4,7 @@ package com.eindopdracht.game.control;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.gameobject.*;
+import com.eindopdracht.game.gameobject.obstacle.Wall;
 
 //Creates game objects
 public class GameObjectCreator {
@@ -70,6 +71,17 @@ public class GameObjectCreator {
         }
 
         handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 64, 64, player));
+    }
+
+
+    /**
+     * @param x horizontal position of the wall
+     * @param y vertical position of the wall
+     * @param width width of the wall
+     * @param height height of the wall
+     */
+    public void createWall(float x, float y, int width, int height) {
+        handler.addGameObject(new Wall(x, y, 0, 0, 0, ID.wall, handler, width, height));
     }
 
     //TODO: add more game objects :D

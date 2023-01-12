@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.control.*;
-import com.eindopdracht.game.gameobject.Bullet;
-import com.eindopdracht.game.gameobject.ID;
 
 public class GameScreen implements Screen {
 
@@ -29,7 +27,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 640, 360);
         viewport = new ExtendViewport(320, 180, camera);
 
-        handler = new Handler();
+        handler = new Handler(this);
         debugRenderer = new Box2DDebugRenderer();
         gameObjectCreator = new GameObjectCreator(game, handler);
     }
@@ -55,7 +53,6 @@ public class GameScreen implements Screen {
             if (!playerExists) {
                 gameObjectCreator.createPlayer(80, 80);
                 gameObjectCreator.createBasicEnemy(240, 240);
-                gameObjectCreator.createBullet(100, 300, (float) (Math.PI * 1.5f));
                 playerExists = true;
             }
         } catch (Exception e) {
@@ -106,5 +103,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         handler.getWorldHandler().dispose();
         debugRenderer.dispose();
+    }
+
+    public GameObjectCreator getGameObjectCreator() {
+        return gameObjectCreator;
     }
 }
