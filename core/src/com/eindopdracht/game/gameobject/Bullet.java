@@ -11,6 +11,7 @@ public class Bullet extends GameObject {
 
     public Bullet(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
+
     }
 
     @Override
@@ -21,7 +22,7 @@ public class Bullet extends GameObject {
     @Override
     public void update(float delta) {
         body.setTransform(body.getPosition(), orientation);
-        float speed = 400;
+        float speed = 50000;
         body.setLinearVelocity((float) (Math.cos(orientation) * speed), (float) (Math.sin(orientation) * speed));
     }
 

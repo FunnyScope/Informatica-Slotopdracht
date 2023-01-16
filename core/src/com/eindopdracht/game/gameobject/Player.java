@@ -1,17 +1,21 @@
 package com.eindopdracht.game.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.eindopdracht.game.control.Handler;
+import com.eindopdracht.game.input.*;
 
 public class Player extends GameObject {
     private int level = 0;
+    private InputHandler inputHandler;
 
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
+        inputHandler = new InputHandler();
     }
 
 
@@ -27,7 +31,23 @@ public class Player extends GameObject {
 
         updateStatusEffects(delta);
 
-        body.setLinearVelocity(velX, velY);
+        Vector2 velocity = new Vector2();
+
+        if (inputHandler.getButtonPressed(Button.up)) {
+            velocity.y += 100;
+        }
+        if (inputHandler.getButtonPressed(Button.down)) {
+            velocity.y -= 100;
+        }
+        if (inputHandler.getButtonPressed(Button.left)) {
+            velocity.x -= 100;
+        }
+        if (inputHandler.getButtonPressed(Button.right)) {
+            velocity.x += 100;
+        }
+
+        body.setLinearVelocity(velocity);
+        body.setAngularVelocity(0);
 
     }
 
@@ -35,7 +55,7 @@ public class Player extends GameObject {
     public void createBody(float x, float y) {
         // Create the definition of the body, which is apparently necessary for box2D
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
 
         // Create the body

@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.control.*;
+import com.eindopdracht.game.gameobject.Player;
 
 public class GameScreen implements Screen {
 
@@ -18,18 +19,21 @@ public class GameScreen implements Screen {
     private Handler handler;
     private GameObjectCreator gameObjectCreator;
     private float accumulator = 0;
+    private Player player;
+    private LevelCreator levelCreator;
+    int difficulty = 0;
 
-    private boolean playerExists = false;
 
     public GameScreen(EindOpdracht game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 640, 360);
+        camera.setToOrtho(false, 1920, 1080);
         viewport = new ExtendViewport(320, 180, camera);
 
         handler = new Handler(this);
         debugRenderer = new Box2DDebugRenderer();
         gameObjectCreator = new GameObjectCreator(game, handler);
+        levelCreator = new LevelCreator(handler, gameObjectCreator);
     }
 
     @Override
@@ -48,21 +52,28 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        try {
-            // For testing purposes
-            if (!playerExists) {
-                gameObjectCreator.createPlayer(80, 80);
-                gameObjectCreator.createBasicEnemy(240, 240);
-                playerExists = true;
+
+        if (handler.noEnemiesLeft()) {
+            difficulty += 1;
+            levelCreator.clearLevel();
+            levelCreator.createLevel(difficulty);
+            if(difficulty == 1) {
+                player = (Player) handler.getObjectByIndex(0);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Might need to put some sequence here instead of just getting a new world.
+
+            player.getBody().getPosition().set(0, 48);
         }
+
         // Clearing the screen, updating the camera
         ScreenUtils.clear(0, 0, 0, 0);
+        camera.position.set(player.getBody().getPosition(), 0);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         debugRenderer.render(handler.getWorldHandler().getWorld(), camera.combined);
+
+
+
 
 
 
@@ -76,6 +87,7 @@ public class GameScreen implements Screen {
         handler.update(delta);
         physicsStep(delta);
         gameObjectCreator.freeBullets();
+
 
     }
 

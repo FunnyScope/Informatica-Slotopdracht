@@ -53,4 +53,13 @@ public class Handler {
     public WorldHandler getWorldHandler() {
         return worldHandler;
     }
+
+    public boolean noEnemiesLeft() {
+        for(GameObject gameObject : gameObjects) {
+            if (gameObject.getId() != ID.player || gameObject.getId() != ID.bullet || gameObject.getId() != ID.wall) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

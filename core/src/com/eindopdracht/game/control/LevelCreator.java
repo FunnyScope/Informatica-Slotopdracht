@@ -16,7 +16,7 @@ public class LevelCreator {
     private HashMap<ID, Integer> difficultyMap;
     private ID[] enemyIDArray = {ID.basicEnemy};
 
-    public final int levelWidth = 1200, levelHeight = 900;
+    public final int levelWidth = 1920, levelHeight = 1080;
 
 
     public LevelCreator(Handler handler, GameObjectCreator gameObjectCreator) {
@@ -42,6 +42,14 @@ public class LevelCreator {
 
     public void createLevel(int difficulty) {
 
+        // So the best idea for this is to probably just do it with rooms that get tiled? Or areas.
+        // Something like that
+        // And just use the difficulty for that
+
+        if(difficulty == 1) {
+            gameObjectCreator.createPlayer(0, 32);
+        }
+
         while (difficulty > 0) {
 
             int selectedID = random.nextInt(enemyIDArray.length);
@@ -50,9 +58,13 @@ public class LevelCreator {
 
         }
 
-        //TODO: do something with the walls.
+        //TODO: Create obstacles and such, aside from level boundaries.
 
 
+        gameObjectCreator.createWall(levelWidth * -0.5f, levelHeight / 2f, 32, levelHeight);
+        gameObjectCreator.createWall(levelWidth * 0.5f, levelHeight / 2f, 32, levelHeight);
+        gameObjectCreator.createWall(0, levelHeight, levelWidth, 32);
+        gameObjectCreator.createWall(0, 0, levelWidth, 32);
 
     }
 
@@ -61,7 +73,7 @@ public class LevelCreator {
         try {
             switch(enemyIDArray[selectID]) {
                 case basicEnemy:
-                    gameObjectCreator.createBasicEnemy(random.nextInt(levelWidth), random.nextInt(levelHeight));
+                    gameObjectCreator.createBasicEnemy(random.nextInt(levelWidth) - levelWidth * 0.5f, random.nextInt(levelHeight) - levelHeight * 0.5f);
                     difficulty -= 1;
                     break;
 

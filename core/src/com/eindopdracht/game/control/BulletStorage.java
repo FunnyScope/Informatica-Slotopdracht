@@ -5,9 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.Bullet;
 import com.eindopdracht.game.gameobject.ID;
 
-// Just to be clear, this is because there appears to be some issue with creating a body whilst creating the
-// object in a pool, so I'm just using this as a crutch to avoid that issue
-// It's not as good as the native pool class and its derivatives, but that's not important right now.
+// Because of the fact that the bug this was meant to fix wasn't caused by the pool thing, means that
+// this is sort of useless. I will, nevertheless, keep it here, because it's not doing any harm. I think.
 public class BulletStorage {
 
     private Array<Bullet> bulletArray;
@@ -35,7 +34,9 @@ public class BulletStorage {
     }
 
     private Bullet newObject() {
-        return new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 20, 5);
+        Bullet bullet = new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 20, 5);
+        bullet.reset();
+        return bullet;
     }
 
     /**

@@ -33,6 +33,8 @@ public class BasicEnemy extends GameObject {
     @Override
     public void update(float delta) {
 
+        updateStatusEffects(delta);
+
         timeRemaining -= delta;
 
 
@@ -46,18 +48,9 @@ public class BasicEnemy extends GameObject {
 
 
         Vector2 posDiff = new Vector2(player.getBody().getPosition().x - body.getPosition().x, player.getBody().getPosition().y - body.getPosition().y);
-        float angleRadians =  (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x);
-        if(posDiff.x < 0) {
-            if (posDiff.y < 0) {
-                angleRadians += Math.PI;
-            } else {
-                angleRadians += 0.5f * Math.PI;
-            }
-        } else if (posDiff.y < 0) {
-            angleRadians += 1.5f * Math.PI;
-        }
+        float angleRadians =  (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
 
-        if (!(body.getPosition().dst(player.getBody().getPosition()) > 200)) {
+        if (!(body.getPosition().dst(player.getBody().getPosition()) > 500)) {
 
             body.setLinearVelocity(0, 0);
 
@@ -67,7 +60,7 @@ public class BasicEnemy extends GameObject {
         }
 
 
-        float speed = 10;
+        float speed = 75;
         body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
 
     }
@@ -95,12 +88,22 @@ public class BasicEnemy extends GameObject {
     @Override
     protected void shoot(float angleRadians) {
 
-        //TODO: Fix the bullet being spawned inside of the body of the basicenemy
+        //TODO: Fix the bullet being spawned inside of the body of the basicEnemy
         if(ammoCount > 0 && timeRemaining <= 0) {
             ammoCount--;
-            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x, body.getPosition().y, angleRadians);
+            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x, body.getPosition().y + bodyCompensation(angleRadians).y, angleRadians);
             timeRemaining = 2;
         }
 
+    }
+
+    private Vector2 bodyCompensation(float angleRadians) {
+        Vector2 returnVector = new Vector2(0, 0);
+
+        float radius = (float) Math.sqrt(width * width + height * height);
+
+        returnVector.set((float) (radius * Math.cos(angleRadians)), (float) (radius * Math.sin(angleRadians)));
+
+        return returnVector;
     }
 }

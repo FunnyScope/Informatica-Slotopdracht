@@ -84,6 +84,7 @@ public class GameObjectCreator {
         handler.addGameObject(new Wall(x, y, 0, 0, 0, ID.wall, handler, width, height));
     }
 
+
     //TODO: add more game objects :D
 
 
@@ -98,4 +99,6 @@ public class GameObjectCreator {
             bulletQueue.removeIndex(i);
         }
     }
+
+
 }

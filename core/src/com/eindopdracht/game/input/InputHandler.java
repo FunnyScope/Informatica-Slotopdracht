@@ -1,14 +1,13 @@
 package com.eindopdracht.game.input;
 
 
-import com.eindopdracht.game.EindOpdracht;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 
 public class InputHandler {
 
-    private EindOpdracht game;
+    public InputHandler() {
 
-    public InputHandler(EindOpdracht game) {
-        this.game = game;
     }
 
     //TODO: controls
@@ -21,15 +20,15 @@ public class InputHandler {
     public boolean getButtonPressed(Button button) {
         switch (button) {
             case up:
-                return false;
+                return Gdx.input.isKeyPressed(Input.Keys.W);
             case down:
-                return false;
+                return Gdx.input.isKeyPressed(Input.Keys.S);
             case left:
-                return false;
+                return Gdx.input.isKeyPressed(Input.Keys.A);
             case right:
-                return false;
+                return Gdx.input.isKeyPressed(Input.Keys.D);
             case shoot:
-                return false;
+                return Gdx.input.isKeyPressed(Input.Keys.E);
             default:
                 return false;
         }
