@@ -21,6 +21,7 @@ public class WorldHandler implements ContactListener {
         world.setContactListener(this);
     }
 
+
     public World getWorld() {
         return world;
     }
@@ -38,6 +39,7 @@ public class WorldHandler implements ContactListener {
         GameObject objectB = (GameObject) contact.getFixtureB().getBody().getUserData();
 
         Bullet bullet = null;
+
 
         if(objectA.getId() == ID.bullet && objectB.getId() != ID.bullet) {
             bullet = (Bullet) objectA;

@@ -34,7 +34,7 @@ public class BulletStorage {
     }
 
     private Bullet newObject() {
-        Bullet bullet = new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 20, 5);
+        Bullet bullet = new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 1.6f, 0.5f);
         bullet.reset();
         return bullet;
     }

@@ -25,7 +25,7 @@ public class GameObjectCreator {
      * @param y vertical position of the player
      */
     public void createPlayer(float x, float y) {
-        handler.addGameObject(new Player(x, y, 0, 0, 0, ID.player, handler, 64, 64));
+        handler.addGameObject(new Player(x, y, 0, 0, 0, ID.player, handler, 6.4f, 6.4f));
     }
 
     /**
@@ -70,7 +70,7 @@ public class GameObjectCreator {
             throw new Exception();
         }
 
-        handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 64, 64, player));
+        handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 6.4f, 6.4f, player));
     }
 
 
@@ -80,7 +80,7 @@ public class GameObjectCreator {
      * @param width width of the wall
      * @param height height of the wall
      */
-    public void createWall(float x, float y, int width, int height) {
+    public void createWall(float x, float y, float width, float height) {
         handler.addGameObject(new Wall(x, y, 0, 0, 0, ID.wall, handler, width, height));
     }
 

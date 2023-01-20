@@ -1,5 +1,6 @@
 package com.eindopdracht.game.control;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.GameObject;
 import com.eindopdracht.game.gameobject.ID;
@@ -16,7 +17,7 @@ public class LevelCreator {
     private HashMap<ID, Integer> difficultyMap;
     private ID[] enemyIDArray = {ID.basicEnemy};
 
-    public final int levelWidth = 1920, levelHeight = 1080;
+    public final int levelWidth = 192, levelHeight = 108;
 
 
     public LevelCreator(Handler handler, GameObjectCreator gameObjectCreator) {
@@ -61,10 +62,10 @@ public class LevelCreator {
         //TODO: Create obstacles and such, aside from level boundaries.
 
 
-        gameObjectCreator.createWall(levelWidth * -0.5f, levelHeight / 2f, 32, levelHeight);
-        gameObjectCreator.createWall(levelWidth * 0.5f, levelHeight / 2f, 32, levelHeight);
-        gameObjectCreator.createWall(0, levelHeight, levelWidth, 32);
-        gameObjectCreator.createWall(0, 0, levelWidth, 32);
+        gameObjectCreator.createWall(levelWidth * -0.5f, levelHeight / 2f, 3.2f, levelHeight);
+        gameObjectCreator.createWall(levelWidth * 0.5f, levelHeight / 2f, 3.2f, levelHeight);
+        gameObjectCreator.createWall(0, levelHeight, levelWidth, 3.2f);
+        gameObjectCreator.createWall(0, 0, levelWidth, 3.2f);
 
     }
 
@@ -73,7 +74,7 @@ public class LevelCreator {
         try {
             switch(enemyIDArray[selectID]) {
                 case basicEnemy:
-                    gameObjectCreator.createBasicEnemy(random.nextInt(levelWidth) - levelWidth * 0.5f, random.nextInt(levelHeight) - levelHeight * 0.5f);
+                    gameObjectCreator.createBasicEnemy(MathUtils.clamp(random.nextInt(levelWidth), 3.2f, levelWidth - 3.2f), MathUtils.clamp(random.nextInt(levelHeight) - levelHeight * 0.5f, 3.2f, levelHeight - 3.2f));
                     difficulty -= 1;
                     break;
 

@@ -11,7 +11,7 @@ import com.eindopdracht.game.gameobject.ID;
 //This thing shouldn't do anything, ever.
 public class Wall extends GameObject {
 
-    public Wall(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
+    public Wall(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
     }
 

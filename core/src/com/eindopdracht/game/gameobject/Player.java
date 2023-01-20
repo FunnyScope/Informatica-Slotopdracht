@@ -13,7 +13,7 @@ public class Player extends GameObject {
     private InputHandler inputHandler;
 
 
-    public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
+    public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         inputHandler = new InputHandler();
     }
@@ -34,16 +34,16 @@ public class Player extends GameObject {
         Vector2 velocity = new Vector2();
 
         if (inputHandler.getButtonPressed(Button.up)) {
-            velocity.y += 100;
+            velocity.y += 50;
         }
         if (inputHandler.getButtonPressed(Button.down)) {
-            velocity.y -= 100;
+            velocity.y -= 50;
         }
         if (inputHandler.getButtonPressed(Button.left)) {
-            velocity.x -= 100;
+            velocity.x -= 50;
         }
         if (inputHandler.getButtonPressed(Button.right)) {
-            velocity.x += 100;
+            velocity.x += 50;
         }
 
         body.setLinearVelocity(velocity);

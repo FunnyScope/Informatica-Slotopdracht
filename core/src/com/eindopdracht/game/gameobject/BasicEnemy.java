@@ -12,7 +12,7 @@ public class BasicEnemy extends GameObject {
     private final Player player;
     private float timeRemaining = 2;
 
-    public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height, Player player) {
+    public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         this.player = player;
         maxAmmo = 10;
@@ -47,10 +47,9 @@ public class BasicEnemy extends GameObject {
         }
 
 
-        Vector2 posDiff = new Vector2(player.getBody().getPosition().x - body.getPosition().x, player.getBody().getPosition().y - body.getPosition().y);
         float angleRadians =  (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
 
-        if (!(body.getPosition().dst(player.getBody().getPosition()) > 500)) {
+        if (!(body.getPosition().dst(player.getBody().getPosition()) > 50)) {
 
             body.setLinearVelocity(0, 0);
 
@@ -60,7 +59,7 @@ public class BasicEnemy extends GameObject {
         }
 
 
-        float speed = 75;
+        float speed = 25;
         body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
 
     }

@@ -9,7 +9,7 @@ public class Bullet extends GameObject {
     public boolean alive;
     public float damage = 5;
 
-    public Bullet(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
+    public Bullet(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
 
     }

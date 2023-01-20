@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
     public GameScreen(EindOpdracht game) {
         this.game = game;
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        camera.setToOrtho(false, 192, 108);
         viewport = new ExtendViewport(320, 180, camera);
 
         handler = new Handler(this);

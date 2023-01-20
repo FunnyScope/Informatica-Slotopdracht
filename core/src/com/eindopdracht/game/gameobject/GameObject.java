@@ -10,16 +10,16 @@ import com.eindopdracht.game.statuseffect.StatusEffectID;
 
 public abstract class GameObject {
 
-    protected float orientation, velX, velY, health;
+    protected float orientation, velX, velY, health, width, height;
     protected ID id;
     protected Handler handler;
     // We use the body's native position vector to track the position of the game object.
     protected Body body;
-    protected int width, height, maxAmmo = 30, ammoCount = 30;
+    protected int maxAmmo = 30, ammoCount = 30;
 
     private Array<StatusEffect> statusEffects;
 
-    public GameObject(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, int width, int height) {
+    public GameObject(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
 
         this.orientation = orientation;
         this.velX = velX;
@@ -44,19 +44,19 @@ public abstract class GameObject {
         return body;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
