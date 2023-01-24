@@ -60,9 +60,6 @@ public class GameScreen implements Screen {
             if(difficulty == 1) {
                 player = (Player) handler.getObjectByIndex(0);
             }
-            // Might need to put some sequence here instead of just getting a new world.
-
-            player.getBody().getPosition().set(0, 48);
         }
 
         // Clearing the screen, updating the camera

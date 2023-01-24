@@ -39,6 +39,11 @@ public abstract class GameObject {
     public abstract void createBody(float x, float y);
     protected abstract void shoot(float angleRadians);
 
+    public void dispose() {
+        // TODO: When adding sprites and such, fill in this method with the required disposing
+        body.destroyFixture(body.getFixtureList().get(0));
+    }
+
 
     public Body getBody() {
         return body;

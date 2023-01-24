@@ -25,7 +25,7 @@ public class GameObjectCreator {
      * @param y vertical position of the player
      */
     public void createPlayer(float x, float y) {
-        handler.addGameObject(new Player(x, y, 0, 0, 0, ID.player, handler, 6.4f, 6.4f));
+        handler.addGameObject(new Player(x, y, 0, 0, 0, ID.player, handler, 3.2f, 3.2f));
     }
 
     /**
@@ -70,7 +70,7 @@ public class GameObjectCreator {
             throw new Exception();
         }
 
-        handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 6.4f, 6.4f, player));
+        handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 3.2f, 3.2f, player));
     }
 
 
