@@ -65,7 +65,8 @@ public class Bullet extends GameObject {
         damage = 0;
         body.setLinearVelocity(0, 0);
         body.setAngularVelocity(0);
-        body.destroyFixture(body.getFixtureList().pop());
+        if(body.getFixtureList().isEmpty()) return;
+        body.destroyFixture(body.getFixtureList().get(0));
     }
 
     public void init(float x, float y, float orientation) {

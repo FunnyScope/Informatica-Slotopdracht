@@ -11,6 +11,8 @@ public class BasicEnemy extends GameObject {
 
     private final Player player;
     private float timeRemaining = 2;
+    private float reloadTime = 5;
+
 
     public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
@@ -38,16 +40,22 @@ public class BasicEnemy extends GameObject {
         timeRemaining -= delta;
 
 
-        if (ammoCount > maxAmmo) ammoCount = maxAmmo;
-        else if (ammoCount < maxAmmo) ammoCount++;
+        if (ammoCount > maxAmmo) {
+            reloadTime -= delta;
+        }
+        if (reloadTime >= 0) {
+            ammoCount = maxAmmo;
+            reloadTime = 5;
+        }
 
 
-        if(!canSeePlayer()) {
+
+        if (!canSeePlayer()) {
             return;
         }
 
 
-        float angleRadians =  (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
+        float angleRadians = (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
 
         if (!(body.getPosition().dst(player.getBody().getPosition()) > 50)) {
 
@@ -87,10 +95,13 @@ public class BasicEnemy extends GameObject {
     @Override
     protected void shoot(float angleRadians) {
 
-        //TODO: Fix the bullet being spawned inside of the body of the basicEnemy
+        float inaccuracy = 15 / 180f;
+
         if(ammoCount > 0 && timeRemaining <= 0) {
             ammoCount--;
-            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x, body.getPosition().y + bodyCompensation(angleRadians).y, angleRadians);
+            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x,
+                    body.getPosition().y + bodyCompensation(angleRadians).y,
+                    angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2);
             timeRemaining = 2;
         }
 

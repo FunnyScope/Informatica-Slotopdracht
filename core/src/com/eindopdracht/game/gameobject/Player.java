@@ -47,6 +47,7 @@ public class Player extends GameObject {
         }
 
         body.setLinearVelocity(velocity);
+        body.setTransform(body.getPosition(), 0);
         body.setAngularVelocity(0);
 
     }

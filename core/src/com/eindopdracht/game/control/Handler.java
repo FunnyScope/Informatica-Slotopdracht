@@ -5,12 +5,15 @@ import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.*;
 import com.eindopdracht.game.screens.GameScreen;
 
+import java.util.Random;
+
 
 //Handles *all* game objects
 public class Handler {
 
     public final GameScreen hub;
     private WorldHandler worldHandler;
+    public final Random random;
 
     //Array of all game objects
     private Array<GameObject> gameObjects = new Array<>();
@@ -18,6 +21,7 @@ public class Handler {
     public Handler(GameScreen hub) {
         this.hub = hub;
         worldHandler = new WorldHandler(this);
+        random = new Random();
     }
 
 
