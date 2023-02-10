@@ -15,7 +15,7 @@ public class Player extends GameObject {
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
-        inputHandler = new InputHandler();
+        inputHandler = new InputHandler(handler);
     }
 
 
@@ -29,9 +29,23 @@ public class Player extends GameObject {
     @Override
     public void update(float delta) {
 
+        timeRemaining -= delta;
+
+
+        if (ammoCount > maxAmmo) {
+            reloadTime -= delta;
+        }
+
+        if (reloadTime >= 0) {
+            ammoCount = maxAmmo;
+            reloadTime = 5;
+        }
+
         updateStatusEffects(delta);
 
         Vector2 velocity = new Vector2();
+
+
 
         if (inputHandler.getButtonPressed(Button.up)) {
             velocity.y += 50;
@@ -49,6 +63,11 @@ public class Player extends GameObject {
         body.setLinearVelocity(velocity);
         body.setTransform(body.getPosition(), 0);
         body.setAngularVelocity(0);
+
+
+        if (inputHandler.getButtonPressed(Button.shoot)) {
+            shoot(inputHandler.getJoystickPosition());
+        }
 
     }
 
@@ -80,6 +99,26 @@ public class Player extends GameObject {
 
     @Override
     protected void shoot(float angleRadians) {
+        float inaccuracy = 1/18f;
+
+        if(ammoCount > 0 && timeRemaining <= 0) {
+            ammoCount--;
+            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x,
+                    body.getPosition().y + bodyCompensation(angleRadians).y,
+                    angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2);
+            timeRemaining = 2;
+        }
+    }
+
+    private Vector2 bodyCompensation(float angleRadians) {
+        Vector2 returnVector = new Vector2(0, 0);
+
+        float radius = (float) Math.sqrt(width * width + height * height);
+
+        returnVector.set((float) (radius * Math.cos(angleRadians)), (float) (radius * Math.sin(angleRadians)));
+
+        return returnVector;
+
 
     }
 

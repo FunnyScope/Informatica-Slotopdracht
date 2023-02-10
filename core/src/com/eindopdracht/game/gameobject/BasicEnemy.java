@@ -10,8 +10,6 @@ import com.eindopdracht.game.control.Handler;
 public class BasicEnemy extends GameObject {
 
     private final Player player;
-    private float timeRemaining = 2;
-    private float reloadTime = 5;
 
 
     public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
@@ -43,11 +41,11 @@ public class BasicEnemy extends GameObject {
         if (ammoCount > maxAmmo) {
             reloadTime -= delta;
         }
+
         if (reloadTime >= 0) {
             ammoCount = maxAmmo;
             reloadTime = 5;
         }
-
 
 
         if (!canSeePlayer()) {

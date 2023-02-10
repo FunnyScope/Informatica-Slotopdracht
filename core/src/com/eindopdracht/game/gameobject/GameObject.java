@@ -16,6 +16,8 @@ public abstract class GameObject {
     // We use the body's native position vector to track the position of the game object.
     protected Body body;
     protected int maxAmmo = 30, ammoCount = 30;
+    protected float timeRemaining = 2;
+    protected float reloadTime = 5;
 
     private Array<StatusEffect> statusEffects;
 
