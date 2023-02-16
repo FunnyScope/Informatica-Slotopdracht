@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.eindopdracht.game.control.Handler;
-import com.eindopdracht.game.gameobject.Player;
 
 import java.util.Vector;
 
@@ -24,10 +23,10 @@ public class InputHandler {
         float screenHeight = handler.hub.getViewport().getScreenHeight();
         Vector2 screenMiddle = new Vector2(screenWidth / 2, screenHeight / 2);
 
-        Vector2 mousePositionRelativeToMiddle = new Vector2(
-                mousePosition.x - screenMiddle.x,
-                (mousePosition.y - screenMiddle.y) * -1
-        );
+		Vector2 mousePositionRelativeToMiddle = new Vector2(
+			mousePosition.x - screenMiddle.x,
+			(mousePosition.y - screenMiddle.y) * -1
+		);
 
         float angleRadians = (float) (Math.atan2(mousePositionRelativeToMiddle.y, mousePositionRelativeToMiddle.x));
 

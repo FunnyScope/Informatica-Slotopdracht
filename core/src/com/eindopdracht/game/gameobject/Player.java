@@ -36,11 +36,13 @@ public class Player extends GameObject {
         if (reloadTime >= 0) {
            ammoCount = maxAmmo;
            reloadTime = 5;
-        }
+
 
         updateStatusEffects(delta);
 
         Vector2 velocity = new Vector2();
+
+
 
         if (inputHandler.getButtonPressed(Button.up)) {
             velocity.y += 50;
@@ -61,6 +63,11 @@ public class Player extends GameObject {
         body.setLinearVelocity(velocity);
         body.setTransform(body.getPosition(), 0);
         body.setAngularVelocity(0);
+
+
+        if (inputHandler.getButtonPressed(Button.shoot)) {
+            shoot(inputHandler.getJoystickPosition());
+        }
 
     }
 
