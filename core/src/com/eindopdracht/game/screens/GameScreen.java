@@ -117,4 +117,8 @@ public class GameScreen implements Screen {
     public GameObjectCreator getGameObjectCreator() {
         return gameObjectCreator;
     }
+
+    public ExtendViewport getViewport() {
+        return viewport;
+    }
 }

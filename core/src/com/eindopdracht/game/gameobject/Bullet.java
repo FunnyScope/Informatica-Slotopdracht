@@ -8,10 +8,11 @@ import com.eindopdracht.game.control.Handler;
 public class Bullet extends GameObject {
     public boolean alive;
     public float damage = 5;
+    private BulletID bulletID;
 
-    public Bullet(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
+    public Bullet(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, BulletID bulletID) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
-
+        this.bulletID = bulletID;
     }
 
     @Override
@@ -62,26 +63,32 @@ public class Bullet extends GameObject {
 
     public void reset() {
         alive = false;
-        damage = 0;
+        damage = 5;
+        bulletID = BulletID.player;
         body.setLinearVelocity(0, 0);
         body.setAngularVelocity(0);
         if(body.getFixtureList().isEmpty()) return;
         body.destroyFixture(body.getFixtureList().get(0));
     }
 
-    public void init(float x, float y, float orientation) {
+    public void init(float x, float y, float orientation, BulletID bulletID) {
         alive = true;
         this.orientation = orientation;
+        this.bulletID = bulletID;
         damage = 5;
         createBody(x, y);
         body.setUserData(this);
     }
-    public void init(float x, float y, float orientation, float damage) {
+    public void init(float x, float y, float orientation, BulletID bulletID, float damage) {
         alive = true;
         this.orientation = orientation;
+        this.bulletID = bulletID;
         this.damage = damage;
         createBody(x, y);
         body.setUserData(this);
     }
 
+    public BulletID getBulletID() {
+        return bulletID;
+    }
 }

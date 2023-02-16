@@ -3,18 +3,35 @@ package com.eindopdracht.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+import com.eindopdracht.game.control.Handler;
+import com.eindopdracht.game.gameobject.Player;
+
+import java.util.Vector;
 
 public class InputHandler {
 
-    public InputHandler() {
+    private Handler handler;
 
+    public InputHandler(Handler handler) {
+        this.handler = handler;
     }
 
     //TODO: controls
     public float getJoystickPosition() {
+        Vector2 mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        float screenWidth = handler.hub.getViewport().getScreenWidth();
+        float screenHeight = handler.hub.getViewport().getScreenHeight();
+        Vector2 screenMiddle = new Vector2(screenWidth / 2, screenHeight / 2);
 
+        Vector2 mousePositionRelativeToMiddle = new Vector2(
+                mousePosition.x - screenMiddle.x,
+                (mousePosition.y - screenMiddle.y) * -1
+        );
 
-        return 0;
+        float angleRadians = (float) (Math.atan2(mousePositionRelativeToMiddle.y, mousePositionRelativeToMiddle.x));
+
+        return angleRadians;
     }
 
     public boolean getButtonPressed(Button button) {
@@ -28,7 +45,7 @@ public class InputHandler {
             case right:
                 return Gdx.input.isKeyPressed(Input.Keys.D);
             case shoot:
-                return Gdx.input.isKeyPressed(Input.Keys.E);
+                return Gdx.input.isKeyPressed(Input.Keys.SPACE);
             default:
                 return false;
         }

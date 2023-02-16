@@ -15,7 +15,7 @@ public class Player extends GameObject {
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
-        inputHandler = new InputHandler();
+        inputHandler = new InputHandler(handler);
     }
 
 
@@ -28,6 +28,15 @@ public class Player extends GameObject {
 
     @Override
     public void update(float delta) {
+
+        timeRemaining -= delta;
+        if (ammoCount == 0) {
+            reloadTime -= delta;
+        }
+        if (reloadTime >= 0) {
+           ammoCount = maxAmmo;
+           reloadTime = 5;
+        }
 
         updateStatusEffects(delta);
 
@@ -44,6 +53,9 @@ public class Player extends GameObject {
         }
         if (inputHandler.getButtonPressed(Button.right)) {
             velocity.x += 50;
+        }
+        if(inputHandler.getButtonPressed(Button.shoot)) {
+            shoot(inputHandler.getJoystickPosition());
         }
 
         body.setLinearVelocity(velocity);
@@ -80,7 +92,18 @@ public class Player extends GameObject {
 
     @Override
     protected void shoot(float angleRadians) {
+        float inaccuracy = (float) (1/18f * Math.PI);
 
+        if(ammoCount > 0 && timeRemaining <= 0) {
+            ammoCount--;
+            handler.hub.getGameObjectCreator().createBullet(
+                    body.getPosition().x + bodyCompensation(angleRadians).x,
+                    body.getPosition().y + bodyCompensation(angleRadians).y,
+                    angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2,
+                    BulletID.player
+            );
+            timeRemaining = 2;
+        }
     }
 
     public int getLevel() {

@@ -18,7 +18,7 @@ public abstract class Room {
     public final int size = 160;
     // Each different enemy has its own difficulty, just as rooms have their difficulty.
     protected int difficulty;
-    private ID[] enemyIDArray = {ID.basicEnemy};
+    private ID[] enemyIDArray = {ID.basicEnemy, ID.shotgunEnemy};
     protected Random random;
 
     protected Vector2 tilePosition;
@@ -39,23 +39,37 @@ public abstract class Room {
     protected int createRandomEnemy(int difficulty) {
 
         int chosenEnemy = random.nextInt(enemyIDArray.length);
+        try {
+            switch (enemyIDArray[chosenEnemy]) {
 
-        switch(enemyIDArray[chosenEnemy]) {
+                case basicEnemy:
+                    difficulty -= 1;
+                    theDefault();
+                    break;
+                case shotgunEnemy:
+                    if(difficulty < 2) {
+                        // Technically speaking increases the likelihood of getting a basic enemy, but I don't care.
+                        theDefault();
+                        difficulty -= 1;
+                        break;
+                    }
+                    difficulty -= 2;
 
-            case basicEnemy:
-                difficulty -= 1;
-                try {
-                    gameObjectCreator.createBasicEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            break;
+                    gameObjectCreator.createShotgunEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
 
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-
-
         return difficulty;
+    }
+
+    // Creates a basic enemy
+    private void theDefault() throws Exception {
+        gameObjectCreator.createBasicEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
 
     }
 

@@ -1,6 +1,7 @@
 package com.eindopdracht.game.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.Handler;
@@ -16,6 +17,8 @@ public abstract class GameObject {
     // We use the body's native position vector to track the position of the game object.
     protected Body body;
     protected int maxAmmo = 30, ammoCount = 30;
+    protected float timeRemaining = 2;
+    protected float reloadTime = 5;
 
     private Array<StatusEffect> statusEffects;
 
@@ -42,6 +45,16 @@ public abstract class GameObject {
     public void dispose() {
         // TODO: When adding sprites and such, fill in this method with the required disposing
         body.destroyFixture(body.getFixtureList().get(0));
+    }
+
+    protected Vector2 bodyCompensation(float angleRadians) {
+        Vector2 returnVector = new Vector2(0, 0);
+
+        float radius = (float) Math.sqrt(width * width + height * height);
+
+        returnVector.set((float) (radius * Math.cos(angleRadians)), (float) (radius * Math.sin(angleRadians)));
+
+        return returnVector;
     }
 
 

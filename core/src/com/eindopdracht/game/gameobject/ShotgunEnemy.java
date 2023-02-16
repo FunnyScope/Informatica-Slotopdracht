@@ -7,17 +7,22 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.eindopdracht.game.control.Handler;
 
-public class BasicEnemy extends GameObject {
+public class ShotgunEnemy extends GameObject {
 
-    private final Player player;
+    private Player player;
 
 
-    public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
+    public ShotgunEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         this.player = player;
-        maxAmmo = 10;
-        ammoCount = 10;
+        ammoCount = 2;
+        maxAmmo = 2;
+        timeRemaining = 0.5f;
+        reloadTime = 10;
+    }
 
+    private boolean canSeePlayer() {
+        return true;
     }
 
     @Override
@@ -25,16 +30,9 @@ public class BasicEnemy extends GameObject {
 
     }
 
-    private boolean canSeePlayer() {
-        // TODO: Create line of sight logic. Probably with sensors and such.
-        return true;
-    }
-
     @Override
     public void update(float delta) {
-
         updateStatusEffects(delta);
-
 
         if (ammoCount == 0) {
             reloadTime -= delta;
@@ -43,7 +41,7 @@ public class BasicEnemy extends GameObject {
         }
         if (reloadTime >= 0) {
             ammoCount = maxAmmo;
-            reloadTime = 5;
+            reloadTime = 10;
         }
 
 
@@ -55,7 +53,8 @@ public class BasicEnemy extends GameObject {
 
         float angleRadians = (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
 
-        if (!(body.getPosition().dst(player.getBody().getPosition()) > 25)) {
+        if (!(body.getPosition().dst(player.getBody().getPosition()) > 10.5f)) {
+
 
             body.setLinearVelocity(0, 0);
 
@@ -65,7 +64,7 @@ public class BasicEnemy extends GameObject {
         }
 
 
-        float speed = 25;
+        float speed = 35;
         body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
 
     }
@@ -88,22 +87,29 @@ public class BasicEnemy extends GameObject {
         fixtureDef.restitution = 0.25f;
 
         body.createFixture(fixtureDef);
+
     }
 
     @Override
     protected void shoot(float angleRadians) {
 
-        float inaccuracy = (float) (15 / 180f * Math.PI);
+        float inaccuracy = (float) (1/2 * Math.PI);
 
         if(ammoCount > 0 && timeRemaining <= 0) {
             ammoCount--;
-            handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x,
-                    body.getPosition().y + bodyCompensation(angleRadians).y,
-                    angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2,
-                    BulletID.enemy);
-            timeRemaining = 2;
+
+
+            for(int i = 0; i < handler.random.nextInt(8) + 4; i++) {
+                handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x,
+                        body.getPosition().y + bodyCompensation(angleRadians).y,
+                        angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2,
+                        BulletID.enemy, 3);
+            }
+
+            timeRemaining = 0.5f;
         }
 
     }
+
 
 }

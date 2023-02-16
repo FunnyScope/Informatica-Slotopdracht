@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.Bullet;
+import com.eindopdracht.game.gameobject.BulletID;
 import com.eindopdracht.game.gameobject.GameObject;
 import com.eindopdracht.game.gameobject.ID;
 
@@ -43,10 +44,24 @@ public class WorldHandler implements ContactListener {
 
         if(objectA.getId() == ID.bullet && objectB.getId() != ID.bullet) {
             bullet = (Bullet) objectA;
-            objectB.dealDamage(bullet.damage);
+            if (bullet.getBulletID() == BulletID.enemy && objectB.getId() == ID.player ||
+                    bullet.getBulletID() == BulletID.player && objectB.getId() != ID.player) {
+                objectB.dealDamage(bullet.damage);
+            } else if (bullet.getBulletID() == BulletID.enemy && (objectB.getId() != ID.player
+            && objectB.getId() != ID.wall) ||
+            bullet.getBulletID() == BulletID.player) {
+                bullet = null;
+            }
         } else if (objectB.getId() == ID.bullet && objectA.getId() != ID.bullet) {
             bullet = (Bullet) objectB;
-            objectA.dealDamage(bullet.damage);
+            if (bullet.getBulletID() == BulletID.enemy && objectA.getId() == ID.player ||
+                    bullet.getBulletID() == BulletID.player && objectA.getId() != ID.player) {
+                objectA.dealDamage(bullet.damage);
+            } else if (bullet.getBulletID() == BulletID.enemy && (objectA.getId() != ID.player
+                    && objectA.getId() != ID.wall) ||
+                    bullet.getBulletID() == BulletID.player) {
+                bullet = null;
+            }
         }
 
         if(bullet != null) {

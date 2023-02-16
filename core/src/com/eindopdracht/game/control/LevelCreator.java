@@ -76,8 +76,8 @@ public class LevelCreator {
             switch(roomListSize) {
                 case 1:
                     newRoom = new BasicRoom(gameObjectCreator,
-                            (int) selectedTile.x * 80,
-                            (int) selectedTile.y * 80,
+                            (int) selectedTile.x * 160,
+                            (int) selectedTile.y * 160,
                             selectedTile);
                     availableTiles.removeValue(selectedTile, false);
                     rooms.add(newRoom);

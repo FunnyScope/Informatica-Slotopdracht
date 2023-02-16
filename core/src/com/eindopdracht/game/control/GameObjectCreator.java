@@ -32,11 +32,12 @@ public class GameObjectCreator {
      * @param x horizontal position of the bullet
      * @param y vertical position of the bullet
      * @param orientation orientation of the bullet, in radians
+     * @param bulletID the ID of the bullet, either player or enemy
      */
-    public void createBullet(float x, float y, float orientation) {
+    public void createBullet(float x, float y, float orientation, BulletID bulletID) {
 
         Bullet bullet = bulletPool.obtain();
-        bullet.init(x, y, orientation);
+        bullet.init(x, y, orientation, bulletID);
         handler.addGameObject(bullet);
     }
 
@@ -44,12 +45,13 @@ public class GameObjectCreator {
      * @param x horizontal position of the bullet
      * @param y vertical position of the bullet
      * @param orientation orientation of the bullet, in radians
+     * @param bulletID the ID of the bullet, either player or enemy
      * @param damage damage dealt by the bullet
      */
-    public void createBullet(float x, float y, float orientation, float damage) {
+    public void createBullet(float x, float y, float orientation, BulletID bulletID, float damage) {
 
         Bullet bullet = bulletPool.obtain();
-        bullet.init(x, y, orientation, damage);
+        bullet.init(x, y, orientation, bulletID, damage);
         handler.addGameObject(bullet);
     }
 
@@ -82,6 +84,21 @@ public class GameObjectCreator {
      */
     public void createWall(float x, float y, float width, float height) {
         handler.addGameObject(new Wall(x, y, 0, 0, 0, ID.wall, handler, width, height));
+    }
+
+    public void createShotgunEnemy(float x, float y) throws Exception {
+        Player player = null;
+
+        for (GameObject gameObject : handler.getGameObjects()) {
+            if (gameObject.getId() == ID.player) {
+                player = (Player) gameObject;
+            }
+        }
+        if (player == null) {
+            throw new Exception();
+        }
+
+        handler.addGameObject(new ShotgunEnemy(x, y, 0, 0, 0, ID.shotgunEnemy, handler, 3.2f, 3.2f, player));
     }
 
 
