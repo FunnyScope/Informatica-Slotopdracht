@@ -48,9 +48,4 @@ public class EindOpdracht extends Game {
 		gameScreen.dispose();
 		mainMenu.dispose();
 	}
-
-	@Override
-	public void resize(int width, int height) {
-		super.resize(width, height);
-	}
 }

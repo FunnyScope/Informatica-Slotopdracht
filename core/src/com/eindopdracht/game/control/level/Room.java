@@ -4,11 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.GameObjectCreator;
 import com.eindopdracht.game.gameobject.ID;
+import com.eindopdracht.game.gameobject.ai.Connection;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public abstract class Room {
+
+
 
     // To create the game objects
     protected GameObjectCreator gameObjectCreator;
@@ -20,6 +22,7 @@ public abstract class Room {
     protected int difficulty;
     private ID[] enemyIDArray = {ID.basicEnemy, ID.shotgunEnemy};
     protected Random random;
+    protected Array<Vector2> roomDistributionTiles = new Array<>();
 
     protected Vector2 tilePosition;
 
@@ -30,10 +33,27 @@ public abstract class Room {
         this.y = y;
         this.tilePosition = tilePosition;
 
+        fillInRoomDistributionTiles();
+
         random = new Random();
     }
 
     public abstract void build();
+    // Building internal walls needs to happen in this method too
+    public abstract Array<Connection> roomPatrol();
+    public abstract void createWalls();
+
+    private void fillInRoomDistributionTiles() {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                roomDistributionTiles.add(new Vector2(
+                        tilePosition.x * 16 + i,
+                        tilePosition.y * 16 + j
+                ));
+            }
+
+        }
+    }
 
 
     protected int createRandomEnemy(int difficulty) {
@@ -41,23 +61,19 @@ public abstract class Room {
         int chosenEnemy = random.nextInt(enemyIDArray.length);
         try {
             switch (enemyIDArray[chosenEnemy]) {
-
-                case basicEnemy:
+                case basicEnemy -> {
                     difficulty -= 1;
                     theDefault();
-                    break;
-                case shotgunEnemy:
-                    if(difficulty < 2) {
-                        // Technically speaking increases the likelihood of getting a basic enemy, but I don't care.
+                }
+                case shotgunEnemy -> {
+                    if (difficulty < 2) {
                         theDefault();
                         difficulty -= 1;
                         break;
                     }
                     difficulty -= 2;
-
                     gameObjectCreator.createShotgunEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
-
-                    break;
+                }
             }
 
         } catch (Exception e) {

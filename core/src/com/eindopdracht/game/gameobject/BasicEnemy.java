@@ -41,11 +41,11 @@ public class BasicEnemy extends GameObject {
         } else {
             timeRemaining -= delta;
         }
-
         if (reloadTime >= 0) {
             ammoCount = maxAmmo;
             reloadTime = 5;
         }
+
 
 
         if (!canSeePlayer()) {

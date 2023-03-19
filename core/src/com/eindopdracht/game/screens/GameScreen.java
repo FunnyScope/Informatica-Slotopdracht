@@ -22,6 +22,7 @@ public class GameScreen implements Screen {
     private Player player;
     private LevelCreator levelCreator;
     int difficulty = 0;
+    private boolean playerAlive = false;
 
 
     public GameScreen(EindOpdracht game) {
@@ -38,6 +39,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+
+    }
+    // TODO: Create the below
+    private void gameOverSequence() {
 
     }
 
@@ -58,6 +63,7 @@ public class GameScreen implements Screen {
             levelCreator.clearLevel();
             levelCreator.createLevel(difficulty);
             if(difficulty == 1) {
+                playerAlive = true;
                 player = (Player) handler.getObjectByIndex(0);
             }
         }
@@ -84,14 +90,20 @@ public class GameScreen implements Screen {
         handler.update(delta);
         physicsStep(delta);
         gameObjectCreator.freeBullets();
+        if (!handler.isPlayerAlive() && playerAlive) {
+            playerAlive = false;
+            gameOverSequence();
+            // TODO: Figure the rest of this out
+        }
+        handler.removeDeadEnemies();
+
 
 
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.setScreenWidth(width);
-        viewport.setScreenHeight(height);
+
     }
 
     @Override

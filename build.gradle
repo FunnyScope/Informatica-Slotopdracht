@@ -1,5 +1,4 @@
 buildscript {
-    
 
     repositories {
         mavenLocal()
@@ -12,12 +11,15 @@ buildscript {
         
 
     }
+    
 }
 
 allprojects {
     apply plugin: "eclipse"
 
     version = '1.0'
+
+
     ext {
         appName = "Informatica Eindopdracht"
         gdxVersion = '1.11.0'
@@ -41,6 +43,15 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java-library"
+
+    jar {
+        manifest {
+            attributes "Main-Class": "com.eindopdracht.game.DesktopLauncher"
+        }
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
 
 
     dependencies {

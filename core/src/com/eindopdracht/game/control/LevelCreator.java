@@ -49,7 +49,7 @@ public class LevelCreator {
             tileRemoval.add(tile);
         }
         for (Vector2 tile: tileRemoval) {
-            availableTiles.removeValue(tile, false);
+            availableTiles.removeValue(tile, true);
         }
     }
 
@@ -110,5 +110,9 @@ public class LevelCreator {
             }
         }
         return false;
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
     }
 }

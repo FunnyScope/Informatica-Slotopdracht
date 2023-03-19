@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.*;
 import com.eindopdracht.game.screens.GameScreen;
 
+import java.util.MissingResourceException;
 import java.util.Random;
 
 
@@ -65,5 +66,28 @@ public class Handler {
             }
         }
         return true;
+    }
+
+    public void removeDeadEnemies() {
+        Array<GameObject> deadEnemies = new Array<>();
+        for(GameObject gameObject : gameObjects) {
+            if (gameObject.getId() != ID.player && gameObject.getId() != ID.bullet && gameObject.getId() != ID.wall) {
+                if (gameObject.getHealth() <= 0) {
+                    deadEnemies.add(gameObject);
+                }
+            }
+        }
+        for(GameObject gameObject : deadEnemies) {
+            gameObjects.removeValue(gameObject, true);
+        }
+    }
+
+    public boolean isPlayerAlive() {
+        for(GameObject gameObject : gameObjects) {
+            if(gameObject.getId() == ID.player) {
+                return (gameObject.getHealth() != 0);
+            }
+        }
+        throw new RuntimeException("Player requested by handler, but not found");
     }
 }
