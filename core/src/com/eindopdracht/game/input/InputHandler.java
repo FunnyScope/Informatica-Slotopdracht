@@ -20,24 +20,22 @@ public class InputHandler {
 
     public boolean getButtonPressed(Button button) {
         switch (button) {
-            case up -> {
+            case up:
                 return false;
-            }
-            case down -> {
+            case down:
                 return false;
-            }
-            case left -> {
+            case left:
                 return false;
-            }
-            case right -> {
+
+            case right:
                 return false;
-            }
-            case shoot -> {
+
+            case shoot:
                 return false;
-            }
-            default -> {
+
+            default:
                 return false;
-            }
+
         }
     }
 }
