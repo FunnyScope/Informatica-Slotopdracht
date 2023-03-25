@@ -44,8 +44,8 @@ public abstract class Room {
     public abstract void createWalls();
 
     private void fillInRoomDistributionTiles() {
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
+        for (int i = 1; i <= 16; i++) {
+            for (int j = 1; j <= 16; j++) {
                 roomDistributionTiles.add(new Vector2(
                         tilePosition.x * 16 + i,
                         tilePosition.y * 16 + j
