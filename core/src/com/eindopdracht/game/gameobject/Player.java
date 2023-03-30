@@ -6,16 +6,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.eindopdracht.game.control.Handler;
+import com.eindopdracht.game.control.PlayerShotPosition;
 import com.eindopdracht.game.input.*;
 
 public class Player extends GameObject {
     private int level = 0;
     private InputHandler inputHandler;
+    public int damage = 10, maxHealth = 100;
+    public float attackSpeed = 1, speed = 50;
 
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         inputHandler = new InputHandler(handler);
+        timeRemaining = attackSpeed;
     }
 
 
@@ -30,29 +34,22 @@ public class Player extends GameObject {
     public void update(float delta) {
 
         timeRemaining -= delta;
-        if (ammoCount == 0) {
-            reloadTime -= delta;
-        }
-        if (reloadTime >= 0) {
-           ammoCount = maxAmmo;
-           reloadTime = 5;
-        }
 
         updateStatusEffects(delta);
 
         Vector2 velocity = new Vector2();
 
         if (inputHandler.getButtonPressed(Button.up)) {
-            velocity.y += 50;
+            velocity.y += speed;
         }
         if (inputHandler.getButtonPressed(Button.down)) {
-            velocity.y -= 50;
+            velocity.y -= speed;
         }
         if (inputHandler.getButtonPressed(Button.left)) {
-            velocity.x -= 50;
+            velocity.x -= speed;
         }
         if (inputHandler.getButtonPressed(Button.right)) {
-            velocity.x += 50;
+            velocity.x += speed;
         }
         if(inputHandler.getButtonPressed(Button.shoot)) {
             shoot(inputHandler.getJoystickPosition());
@@ -94,15 +91,16 @@ public class Player extends GameObject {
     protected void shoot(float angleRadians) {
         float inaccuracy = (float) (1/18f * Math.PI);
 
-        if(ammoCount > 0 && timeRemaining <= 0) {
-            ammoCount--;
+        if(timeRemaining <= 0) {
             handler.hub.getGameObjectCreator().createBullet(
                     body.getPosition().x + bodyCompensation(angleRadians).x,
                     body.getPosition().y + bodyCompensation(angleRadians).y,
                     angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2,
-                    BulletID.player
+                    BulletID.player,
+                    damage
             );
-            timeRemaining = 2;
+            timeRemaining = attackSpeed;
+            handler.playerShotPositions.add(new PlayerShotPosition(body.getPosition()));
         }
     }
 

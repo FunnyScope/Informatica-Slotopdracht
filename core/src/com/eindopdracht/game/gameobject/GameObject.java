@@ -37,16 +37,24 @@ public abstract class GameObject {
         body.setUserData(this);
     }
 
+    // Draw the object
     public abstract void draw(SpriteBatch batch);
+    // Update the object positionally etc.
     public abstract void update(float delta);
+    // Create the box2D body
     public abstract void createBody(float x, float y);
+    // The method to shoot with
     protected abstract void shoot(float angleRadians);
 
     public void dispose() {
+
         // TODO: When adding sprites and such, fill in this method with the required disposing
+        if(body.getFixtureList().size == 0) return;
         body.destroyFixture(body.getFixtureList().get(0));
     }
 
+    // Compensates for the size of the body
+    // TODO: remove, shouldn't be necessary anymore, just provides inaccuracy
     protected Vector2 bodyCompensation(float angleRadians) {
         Vector2 returnVector = new Vector2(0, 0);
 
@@ -57,7 +65,7 @@ public abstract class GameObject {
         return returnVector;
     }
 
-
+    // Getters and setters
     public Body getBody() {
         return body;
     }
@@ -142,6 +150,20 @@ public abstract class GameObject {
         this.ammoCount = ammoCount;
     }
 
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    // Handles status effects, like bleeding
+    // TODO: the systems have been created, implement them
     public void addStatusEffect(StatusEffect statusEffect) {
         statusEffects.add(statusEffect);
     }
@@ -176,11 +198,6 @@ public abstract class GameObject {
         health -= damage;
     }
 
-    public float getHealth() {
-        return health;
-    }
 
-    public void setHealth(float health) {
-        this.health = health;
-    }
+
 }

@@ -12,17 +12,27 @@ import com.eindopdracht.game.gameobject.Player;
 
 public class GameScreen implements Screen {
 
-    private EindOpdracht game;
-    private ExtendViewport viewport;
-    private OrthographicCamera camera;
-    private Box2DDebugRenderer debugRenderer;
-    private Handler handler;
-    private GameObjectCreator gameObjectCreator;
+    private final EindOpdracht game;
+    private final ExtendViewport viewport;
+    private final OrthographicCamera camera;
+    private final Box2DDebugRenderer debugRenderer;
+    private final Handler handler;
+    private final GameObjectCreator gameObjectCreator;
     private float accumulator = 0;
     private Player player;
-    private LevelCreator levelCreator;
+    private final LevelCreator levelCreator;
     int difficulty = 0;
     private boolean playerAlive = false;
+
+     enum GameState {
+         Running,
+         Paused,
+         GameOver,
+         LevelUp
+     }
+
+     GameState gameState;
+
 
 
     public GameScreen(EindOpdracht game) {
@@ -39,7 +49,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        gameState = GameState.Running;
     }
     // TODO: Create the below
     private void gameOverSequence() {
@@ -93,10 +103,10 @@ public class GameScreen implements Screen {
         if (!handler.isPlayerAlive() && playerAlive) {
             playerAlive = false;
             gameOverSequence();
-            // TODO: Figure the rest of this out
+            // TODO: Figure the rest of this out. Screen should be set to main menu
         }
         handler.removeDeadEnemies();
-
+        handler.cleanUpPlayerShotPositions();
 
 
     }
@@ -108,21 +118,22 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        gameState = GameState.Paused;
     }
 
     @Override
     public void resume() {
-
+        gameState = GameState.Running;
     }
 
     @Override
     public void hide() {
-
+        gameState = GameState.Paused;
     }
 
     @Override
     public void dispose() {
+        handler.dispose();
         handler.getWorldHandler().dispose();
         debugRenderer.dispose();
     }

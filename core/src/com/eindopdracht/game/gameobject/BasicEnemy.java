@@ -5,29 +5,34 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.Handler;
+import com.eindopdracht.game.gameobject.ai.AI;
+import com.eindopdracht.game.gameobject.ai.Connection;
+import com.eindopdracht.game.gameobject.ai.Node;
+import com.eindopdracht.game.gameobject.ai.NormalAI;
 
-public class BasicEnemy extends GameObject {
+public class BasicEnemy extends GameObject implements Enemy {
 
     private final Player player;
+    private final AI ai;
 
 
-    public BasicEnemy(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height, Player player) {
+    public BasicEnemy(float x, float y, float orientation, float velX, float velY,
+                      ID id, Handler handler,
+                      float width, float height,
+                      Player player, Array<Connection> patrol, Node spawnNode) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         this.player = player;
         maxAmmo = 10;
         ammoCount = 10;
-
+        ai = new NormalAI(patrol, spawnNode, this);
     }
 
+    // TODO: graphics
     @Override
     public void draw(SpriteBatch batch) {
 
-    }
-
-    private boolean canSeePlayer() {
-        // TODO: Create line of sight logic. Probably with sensors and such.
-        return true;
     }
 
     @Override
@@ -46,28 +51,28 @@ public class BasicEnemy extends GameObject {
             reloadTime = 5;
         }
 
+        if (!ai.followPlayer(player)) {
+            Vector2 destination = ai.nextNode().position();
+            float angleRadians = (float) Math.atan2(body.getPosition().y - destination.y, body.getPosition().x - destination.x) + (float) Math.PI;
+            float speed = 25;
+            body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
+        } else {
+            float angleRadians = (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
+
+            if (ai.shouldShoot(player)) {
+                shoot(angleRadians);
+            }
 
 
-        if (!canSeePlayer()) {
-            return;
+            float speed = 25;
+            body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
+
         }
 
 
-        float angleRadians = (float) Math.atan2(body.getPosition().y - player.getBody().getPosition().y, body.getPosition().x - player.getBody().getPosition().x) + (float) Math.PI;
 
-        if (!(body.getPosition().dst(player.getBody().getPosition()) > 25)) {
-
-            body.setLinearVelocity(0, 0);
-
-            shoot(angleRadians);
-
-            return;
-        }
-
-
-        float speed = 25;
-        body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
-
+        body.setTransform(body.getPosition(), 0);
+        body.setAngularVelocity(0);
     }
 
     @Override
@@ -104,6 +109,16 @@ public class BasicEnemy extends GameObject {
             timeRemaining = 2;
         }
 
+    }
+
+    @Override
+    public int shootingDistance() {
+        return 25;
+    }
+
+    @Override
+    public int followDistance() {
+        return 80;
     }
 
 }

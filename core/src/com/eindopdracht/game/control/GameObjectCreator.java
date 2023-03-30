@@ -4,6 +4,8 @@ package com.eindopdracht.game.control;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.EindOpdracht;
 import com.eindopdracht.game.gameobject.*;
+import com.eindopdracht.game.gameobject.ai.Connection;
+import com.eindopdracht.game.gameobject.ai.Node;
 import com.eindopdracht.game.gameobject.obstacle.Wall;
 
 //Creates game objects
@@ -55,12 +57,15 @@ public class GameObjectCreator {
         handler.addGameObject(bullet);
     }
 
+
     /**
-     * @param x horizontal position of the enemy
-     * @param y vertical position of the enemy
-     * @throws Exception if no player can be found, an exception is thrown.
+     * @param x horizontal position of the object
+     * @param y vertical position of the object
+     * @param patrol patrol the object follows
+     * @param spawnNode node at which the object spawns
+     * @throws RuntimeException thrown upon not being able to find the player in the handler
      */
-    public void createBasicEnemy(float x, float y) throws Exception {
+    public void createBasicEnemy(float x, float y, Array<Connection> patrol, Node spawnNode) throws Exception {
         Player player = null;
         for (GameObject gameObject : handler.getGameObjects()) {
             if(gameObject.getId() == ID.player) {
@@ -69,10 +74,13 @@ public class GameObjectCreator {
         }
 
         if(player == null) {
-            throw new Exception();
+            throw new RuntimeException("No player found when creating an enemy.");
         }
 
-        handler.addGameObject(new BasicEnemy(x, y, 0, 0,  0, ID.basicEnemy, handler, 3.2f, 3.2f, player));
+        handler.addGameObject(new BasicEnemy(x, y, 0, 0, 0, ID.shotgunEnemy, handler,
+                3.2f, 3.2f, player,
+                patrol, spawnNode
+        ));
     }
 
 
@@ -86,7 +94,14 @@ public class GameObjectCreator {
         handler.addGameObject(new Wall(x, y, 0, 0, 0, ID.wall, handler, width, height));
     }
 
-    public void createShotgunEnemy(float x, float y) throws Exception {
+    /**
+     * @param x horizontal position of the object
+     * @param y vertical position of the object
+     * @param patrol patrol the object follows
+     * @param spawnNode node at which the object spawns
+     * @throws RuntimeException thrown upon not being able to find the player in the handler
+     */
+    public void createShotgunEnemy(float x, float y, Array<Connection> patrol, Node spawnNode) throws Exception {
         Player player = null;
 
         for (GameObject gameObject : handler.getGameObjects()) {
@@ -95,10 +110,13 @@ public class GameObjectCreator {
             }
         }
         if (player == null) {
-            throw new Exception();
+            throw new RuntimeException("No player found when creating an enemy.");
         }
 
-        handler.addGameObject(new ShotgunEnemy(x, y, 0, 0, 0, ID.shotgunEnemy, handler, 3.2f, 3.2f, player));
+        handler.addGameObject(new ShotgunEnemy(x, y, 0, 0, 0, ID.shotgunEnemy, handler,
+                3.2f, 3.2f, player,
+                patrol, spawnNode
+        ));
     }
 
 
@@ -110,6 +128,12 @@ public class GameObjectCreator {
      */
     public void freeBullets() {
         Array<Bullet> bulletQueue = handler.getWorldHandler().bulletQueue;
+        // Cleans up any stragglers that might not have been caught by the worldHandler as insurance
+        for(GameObject gameObject : handler.getGameObjects()) {
+            if(gameObject.getId() == ID.bullet && gameObject.getBody().getLinearVelocity().len() == 0) {
+                bulletQueue.add((Bullet) gameObject);
+            }
+        }
         // We go back to front to avoid any iteration errors. Yeah, I hate it too
         for(int i = bulletQueue.size - 1; i >= 0; i--) {
             bulletPool.free(bulletQueue.get(i));

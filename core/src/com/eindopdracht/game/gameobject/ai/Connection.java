@@ -9,9 +9,9 @@ public record Connection(Node firstNode, Node secondNode, float distance) {
         Objects.requireNonNull(secondNode);
     }
 
-
     public Connection(Node firstNode, Node secondNode) {
         this(firstNode, secondNode, firstNode.position().dst(secondNode.position()));
     }
+
 
 }

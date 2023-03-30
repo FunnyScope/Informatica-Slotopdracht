@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.gameobject.*;
 import com.eindopdracht.game.screens.GameScreen;
-
-import java.util.MissingResourceException;
 import java.util.Random;
 
 
@@ -15,6 +13,9 @@ public class Handler {
     public final GameScreen hub;
     private WorldHandler worldHandler;
     public final Random random;
+
+    // Logs the different
+    public final Array<PlayerShotPosition> playerShotPositions = new Array<>();
 
     //Array of all game objects
     private Array<GameObject> gameObjects = new Array<>();
@@ -89,5 +90,24 @@ public class Handler {
             }
         }
         throw new RuntimeException("Player requested by handler, but not found");
+    }
+
+    public void cleanUpPlayerShotPositions() {
+        Array<PlayerShotPosition> removalList = new Array<>();
+        for(PlayerShotPosition playerShotPosition : playerShotPositions) {
+            if(playerShotPosition.shouldBeRemoved()) {
+                removalList.add(playerShotPosition);
+            }
+        }
+        for(PlayerShotPosition playerShotPosition : removalList) {
+            playerShotPositions.removeValue(playerShotPosition, true);
+        }
+    }
+
+    // Disposes of everything contained in the game objects, preventing memory leaks.
+    public void dispose() {
+        for(GameObject gameObject : gameObjects) {
+            gameObject.dispose();
+        }
     }
 }

@@ -5,8 +5,11 @@ import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.GameObjectCreator;
 import com.eindopdracht.game.gameobject.ID;
 import com.eindopdracht.game.gameobject.ai.Connection;
+import com.eindopdracht.game.gameobject.ai.Node;
 
 import java.util.Random;
+
+import static com.badlogic.gdx.math.MathUtils.random;
 
 public abstract class Room {
 
@@ -21,7 +24,6 @@ public abstract class Room {
     // Each different enemy has its own difficulty, just as rooms have their difficulty.
     protected int difficulty;
     private ID[] enemyIDArray = {ID.basicEnemy, ID.shotgunEnemy};
-    protected Random random;
     protected Array<Vector2> roomDistributionTiles = new Array<>();
 
     protected Vector2 tilePosition;
@@ -46,33 +48,32 @@ public abstract class Room {
     private void fillInRoomDistributionTiles() {
         for (int i = 1; i <= 16; i++) {
             for (int j = 1; j <= 16; j++) {
-                roomDistributionTiles.add(new Vector2(
-                        tilePosition.x * 16 + i,
-                        tilePosition.y * 16 + j
-                ));
+                roomDistributionTiles.add(new Vector2(i, j));
             }
 
         }
     }
 
 
-    protected int createRandomEnemy(int difficulty) {
+    protected int createRandomEnemy(int difficulty, Array<Connection> patrol) {
 
         int chosenEnemy = random.nextInt(enemyIDArray.length);
         try {
+            Node spawnNode = patrol.get(random.nextInt(patrol.size - 1)).firstNode();
+            System.out.println(spawnNode.position());
             switch (enemyIDArray[chosenEnemy]) {
                 case basicEnemy -> {
                     difficulty -= 1;
-                    theDefault();
+                    theDefault(patrol, spawnNode);
                 }
                 case shotgunEnemy -> {
                     if (difficulty < 2) {
-                        theDefault();
+                        theDefault(patrol, spawnNode);
                         difficulty -= 1;
                         break;
                     }
                     difficulty -= 2;
-                    gameObjectCreator.createShotgunEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
+                    gameObjectCreator.createShotgunEnemy(spawnNode.position().x, spawnNode.position().y, patrol, spawnNode);
                 }
             }
 
@@ -84,8 +85,8 @@ public abstract class Room {
     }
 
     // Creates a basic enemy
-    private void theDefault() throws Exception {
-        gameObjectCreator.createBasicEnemy(random.nextInt(150) - 75 + x, random.nextInt(150) - 75 + y);
+    private void theDefault(Array<Connection> patrol, Node spawnNode) throws Exception {
+        gameObjectCreator.createBasicEnemy(spawnNode.position().x, spawnNode.position().y, patrol, spawnNode);
 
     }
 
