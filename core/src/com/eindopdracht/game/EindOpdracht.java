@@ -29,8 +29,8 @@ public class EindOpdracht extends Game {
 		assets = new Assets(this);
 		assets.queueMainMenu();
 
-		setScreen(loadingScreen);
-
+		//setScreen(loadingScreen);
+		setScreen(gameScreen);
 	}
 
 	//Render method
