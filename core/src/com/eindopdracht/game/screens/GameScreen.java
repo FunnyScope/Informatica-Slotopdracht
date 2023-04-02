@@ -105,13 +105,13 @@ public class GameScreen implements Screen {
                     difficulty += 1;
                     levelCreator.clearLevel();
                     levelCreator.createLevel(difficulty);
-                    player.getBody().getPosition().set(0, 0);
                     if(difficulty == 1) {
                         playerAlive = true;
                         player = (Player) handler.getObjectByIndex(0);
                     } else {
                         gameState = GameState.LevelUp;
                     }
+                    player.getBody().getPosition().set(0, 0);
 
                 }
 
