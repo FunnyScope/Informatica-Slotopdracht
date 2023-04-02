@@ -5,21 +5,27 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.utils.Array;
 import com.eindopdracht.game.control.Handler;
 import com.eindopdracht.game.control.PlayerShotPosition;
 import com.eindopdracht.game.input.*;
+import com.eindopdracht.game.perks.Perk;
 
 public class Player extends GameObject {
     private int level = 0;
-    private InputHandler inputHandler;
-    public int damage = 10, maxHealth = 100;
-    public float attackSpeed = 1, speed = 50;
+    private final InputHandler inputHandler;
+    public int damage = 20;
+    public float attackSpeed = 1, speed = 50, inaccuracy = (float) (1/18f * Math.PI);
+
+    private final Array<Perk> perks = new Array<>();
 
 
     public Player(float x, float y, float orientation, float velX, float velY, ID id, Handler handler, float width, float height) {
         super(x, y, orientation, velX, velY, id, handler, width, height);
         inputHandler = new InputHandler(handler);
         timeRemaining = attackSpeed;
+        maxHealth = 200;
+        health = 200;
     }
 
 
@@ -36,6 +42,10 @@ public class Player extends GameObject {
         timeRemaining -= delta;
 
         updateStatusEffects(delta);
+
+        for (Perk perk : perks) {
+            perk.update(delta);
+        }
 
         Vector2 velocity = new Vector2();
 
@@ -89,7 +99,6 @@ public class Player extends GameObject {
 
     @Override
     protected void shoot(float angleRadians) {
-        float inaccuracy = (float) (1/18f * Math.PI);
 
         if(timeRemaining <= 0) {
             handler.hub.getGameObjectCreator().createBullet(
@@ -112,4 +121,11 @@ public class Player extends GameObject {
         this.level = level;
     }
 
+    public InputHandler getInputHandler() {
+        return inputHandler;
+    }
+
+    public void addPerk(Perk perk) {
+        perks.add(perk);
+    }
 }

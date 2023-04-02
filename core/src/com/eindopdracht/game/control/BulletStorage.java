@@ -6,7 +6,7 @@ import com.eindopdracht.game.gameobject.Bullet;
 import com.eindopdracht.game.gameobject.BulletID;
 import com.eindopdracht.game.gameobject.ID;
 
-// Because of the fact that the bug this was meant to fix wasn't caused by the pool thing, means that
+// Because the bug this was meant to fix wasn't caused by the pool thing, means that
 // this is sort of useless. I will, nevertheless, keep it here, because it's not doing any harm. I think.
 public class BulletStorage {
 
@@ -35,7 +35,7 @@ public class BulletStorage {
     }
 
     private Bullet newObject() {
-        Bullet bullet = new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 0.8f, 0.25f, BulletID.player);
+        Bullet bullet = new Bullet(0, 0, 0, 0, 0, ID.bullet, handler, 0.4f, 0.125f, BulletID.player);
         bullet.reset();
         return bullet;
     }
@@ -45,6 +45,7 @@ public class BulletStorage {
      */
     public void free(Bullet bullet) {
         if(bulletArray.size >= maximum) {
+            bullet.dispose();
             return;
         }
 

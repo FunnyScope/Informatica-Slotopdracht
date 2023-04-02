@@ -1,6 +1,5 @@
 buildscript {
 
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -9,15 +8,18 @@ buildscript {
         google()
     }
     dependencies {
-
+        
 
     }
+    
 }
 
 allprojects {
     apply plugin: "eclipse"
 
     version = '1.0'
+
+
     ext {
         appName = "Informatica Eindopdracht"
         gdxVersion = '1.11.0'
@@ -42,6 +44,15 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
 
+    jar {
+        manifest {
+            attributes "Main-Class": "com.eindopdracht.game.DesktopLauncher"
+        }
+        from {
+            configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        }
+    }
+
 
     dependencies {
         implementation project(":core")
@@ -49,7 +60,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-
+        
     }
 }
 
@@ -62,6 +73,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-
+        
     }
 }

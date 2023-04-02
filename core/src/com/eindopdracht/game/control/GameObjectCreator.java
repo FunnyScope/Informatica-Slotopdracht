@@ -128,13 +128,15 @@ public class GameObjectCreator {
      */
     public void freeBullets() {
         Array<Bullet> bulletQueue = handler.getWorldHandler().bulletQueue;
-        // Cleans up any stragglers that might not have been caught by the worldHandler as insurance
+        // Cleans up any stragglers that might not have been caught by the worldHandler as insurance.
+        // Probably superfluous, however, I enjoy the safety that redundancy grants me.
         for(GameObject gameObject : handler.getGameObjects()) {
             if(gameObject.getId() == ID.bullet && gameObject.getBody().getLinearVelocity().len() == 0) {
                 bulletQueue.add((Bullet) gameObject);
             }
         }
-        // We go back to front to avoid any iteration errors. Yeah, I hate it too
+
+        // We go back to front to avoid any iteration errors. Yeah, I hate it too.
         for(int i = bulletQueue.size - 1; i >= 0; i--) {
             bulletPool.free(bulletQueue.get(i));
             bulletQueue.removeIndex(i);

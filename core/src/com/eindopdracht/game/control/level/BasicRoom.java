@@ -40,8 +40,8 @@ public class BasicRoom extends Room {
         nodes.add(
                 new Node((tilePosition.x - 0.5f) * 160 + 5, (tilePosition.y - 0.5f) * 160 + 5),
                 new Node((tilePosition.x - 0.5f) * 160 + 5, (tilePosition.y - 0.5f) * 160 + 155),
-                new Node((tilePosition.x - 0.5f) * 160 + 155, (tilePosition.y - 0.5f) * 160 + 5),
-                new Node((tilePosition.x - 0.5f) * 160 + 155, (tilePosition.y - 0.5f) * 160 + 155)
+                new Node((tilePosition.x - 0.5f) * 160 + 155, (tilePosition.y - 0.5f) * 160 + 155),
+                new Node((tilePosition.x - 0.5f) * 160 + 155, (tilePosition.y - 0.5f) * 160 + 5)
         );
 
         Array<Connection> connections = new Array<>();

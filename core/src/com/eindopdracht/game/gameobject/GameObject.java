@@ -1,6 +1,7 @@
 package com.eindopdracht.game.gameobject;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
@@ -11,7 +12,7 @@ import com.eindopdracht.game.statuseffect.StatusEffectID;
 
 public abstract class GameObject {
 
-    protected float orientation, velX, velY, health, width, height;
+    protected float orientation, velX, velY, health, maxHealth = 100, width, height;
     protected ID id;
     protected Handler handler;
     // We use the body's native position vector to track the position of the game object.
@@ -158,6 +159,14 @@ public abstract class GameObject {
         this.health = health;
     }
 
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
     public Handler getHandler() {
         return handler;
     }
@@ -195,7 +204,7 @@ public abstract class GameObject {
     public void dealDamage(float damage) {
         if(hasStatusEffect(StatusEffectID.BulletImmunity))
             return;
-        health -= damage;
+        health = MathUtils.clamp(health - damage, 0, maxHealth);
     }
 
 

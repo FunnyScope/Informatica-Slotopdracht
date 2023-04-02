@@ -9,13 +9,22 @@ import com.eindopdracht.game.control.Handler;
 public class InputHandler {
 
     private Handler handler;
+    private final boolean isPlayer;
 
     public InputHandler(Handler handler) {
         this.handler = handler;
+        isPlayer = true;
+    }
+
+    public InputHandler() {
+        isPlayer = false;
     }
 
     //TODO: controls
     public float getJoystickPosition() {
+        if(!isPlayer) {
+            return 0;
+        }
         Vector2 mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         float screenWidth = handler.hub.getViewport().getScreenWidth();
         float screenHeight = handler.hub.getViewport().getScreenHeight();
@@ -25,8 +34,6 @@ public class InputHandler {
                 mousePosition.x - screenMiddle.x,
                 (mousePosition.y - screenMiddle.y)
         );
-
-        System.out.println(mousePositionRelativeToMiddle);
 
         float angleRadians = (float) (Math.atan2(mousePositionRelativeToMiddle.y, mousePositionRelativeToMiddle.x));
 

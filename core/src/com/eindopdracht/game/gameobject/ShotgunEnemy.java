@@ -12,6 +12,8 @@ import com.eindopdracht.game.gameobject.ai.Connection;
 import com.eindopdracht.game.gameobject.ai.Node;
 import com.eindopdracht.game.gameobject.ai.NormalAI;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class ShotgunEnemy extends GameObject implements Enemy {
 
     private final Player player;
@@ -65,12 +67,13 @@ public class ShotgunEnemy extends GameObject implements Enemy {
 
             if (ai.shouldShoot(player)) {
                 shoot(angleRadians);
+                body.setLinearVelocity(0, 0);
             }
 
-
-            float speed = 35;
-            body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
-
+            if(!(player.body.getPosition().dst(body.getPosition()) < shootingDistance())) {
+                float speed = 35;
+                body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
+            }
         }
 
         body.setTransform(body.getPosition(), 0);
@@ -101,20 +104,18 @@ public class ShotgunEnemy extends GameObject implements Enemy {
     @Override
     protected void shoot(float angleRadians) {
 
-        float inaccuracy = (float) (1/2 * Math.PI);
-
         if(ammoCount > 0 && timeRemaining <= 0) {
             ammoCount--;
 
 
-            for(int i = 0; i < handler.random.nextInt(8) + 4; i++) {
+            for(int i = -4; i < 5; i++) {
                 handler.hub.getGameObjectCreator().createBullet(body.getPosition().x + bodyCompensation(angleRadians).x,
                         body.getPosition().y + bodyCompensation(angleRadians).y,
-                        angleRadians + handler.random.nextFloat() * inaccuracy - inaccuracy / 2,
+                        (float) (angleRadians  + i * 0.03125 * Math.PI),
                         BulletID.enemy, 3);
             }
 
-            timeRemaining = 0.5f;
+            timeRemaining = 2f;
         }
 
     }
@@ -122,12 +123,12 @@ public class ShotgunEnemy extends GameObject implements Enemy {
 
     @Override
     public int shootingDistance() {
-        return 10;
+        return 25;
     }
 
     @Override
     public int followDistance() {
-        return 40;
+        return 50;
     }
 
 }

@@ -11,14 +11,14 @@ import java.util.Random;
 public class Handler {
 
     public final GameScreen hub;
-    private WorldHandler worldHandler;
+    private final WorldHandler worldHandler;
     public final Random random;
 
     // Logs the different
     public final Array<PlayerShotPosition> playerShotPositions = new Array<>();
 
     //Array of all game objects
-    private Array<GameObject> gameObjects = new Array<>();
+    private final Array<GameObject> gameObjects = new Array<>();
 
     public Handler(GameScreen hub) {
         this.hub = hub;
@@ -62,7 +62,7 @@ public class Handler {
 
     public boolean noEnemiesLeft() {
         for(GameObject gameObject : gameObjects) {
-            if (gameObject.getId() != ID.player || gameObject.getId() != ID.bullet || gameObject.getId() != ID.wall) {
+            if (gameObject.getId() != ID.player && gameObject.getId() != ID.bullet && gameObject.getId() != ID.wall) {
                 return false;
             }
         }
@@ -79,6 +79,7 @@ public class Handler {
             }
         }
         for(GameObject gameObject : deadEnemies) {
+            gameObject.dispose();
             gameObjects.removeValue(gameObject, true);
         }
     }
@@ -110,4 +111,23 @@ public class Handler {
             gameObject.dispose();
         }
     }
+
+    public void cleanOutGameObjects() {
+        Array<GameObject> gameObjectRemovalArray = new Array<>();
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject.getId() == ID.bullet)) {
+                gameObject.dispose();
+                gameObjectRemovalArray.add(gameObject);
+            } else {
+                gameObjectRemovalArray.add(gameObject);
+                worldHandler.bulletQueue.add((Bullet) gameObject);
+            }
+        }
+        for (GameObject gameObject : gameObjectRemovalArray) {
+            gameObjects.removeValue(gameObject, true);
+        }
+
+
+    }
+
 }

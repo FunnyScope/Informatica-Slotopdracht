@@ -61,12 +61,13 @@ public class BasicEnemy extends GameObject implements Enemy {
 
             if (ai.shouldShoot(player)) {
                 shoot(angleRadians);
+                body.setLinearVelocity(0, 0);
             }
 
-
-            float speed = 25;
-            body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
-
+            if(!(player.body.getPosition().dst(body.getPosition()) < shootingDistance())) {
+                float speed = 25;
+                body.setLinearVelocity((float) Math.cos(angleRadians) * speed, (float) Math.sin(angleRadians) * speed);
+            }
         }
 
 
@@ -98,7 +99,7 @@ public class BasicEnemy extends GameObject implements Enemy {
     @Override
     protected void shoot(float angleRadians) {
 
-        float inaccuracy = (float) (15 / 180f * Math.PI);
+        float inaccuracy = (float) (5 / 180f * Math.PI);
 
         if(ammoCount > 0 && timeRemaining <= 0) {
             ammoCount--;
@@ -113,7 +114,7 @@ public class BasicEnemy extends GameObject implements Enemy {
 
     @Override
     public int shootingDistance() {
-        return 25;
+        return 60;
     }
 
     @Override

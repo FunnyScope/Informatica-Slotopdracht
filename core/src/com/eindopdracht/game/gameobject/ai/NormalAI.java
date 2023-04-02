@@ -24,7 +24,7 @@ public class NormalAI implements AI {
         this.patrol = patrol;
         currentGoal = spawnNode;
         this.gameObject = gameObject;
-        distanceBias = random.nextInt(10) + 5;
+        distanceBias = random.nextInt(4) + 1;
     }
 
     @Override

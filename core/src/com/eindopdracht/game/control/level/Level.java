@@ -17,7 +17,6 @@ public class Level {
     }
 
     public void buildLevel() {
-        System.out.println(adjacentTiles);
 
         for (Room room: rooms) {
             room.build();

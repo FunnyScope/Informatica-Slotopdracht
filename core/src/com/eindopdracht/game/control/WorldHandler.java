@@ -65,6 +65,7 @@ public class WorldHandler implements ContactListener {
         }
 
         if(bullet != null) {
+            handler.getGameObjects().removeValue(bullet, true);
             bulletQueue.add(bullet);
         }
     }

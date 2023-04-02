@@ -23,7 +23,7 @@ public abstract class Room {
     public final int size = 160;
     // Each different enemy has its own difficulty, just as rooms have their difficulty.
     protected int difficulty;
-    private ID[] enemyIDArray = {ID.basicEnemy, ID.shotgunEnemy};
+    private final ID[] enemyIDArray = {ID.basicEnemy, ID.shotgunEnemy};
     protected Array<Vector2> roomDistributionTiles = new Array<>();
 
     protected Vector2 tilePosition;
@@ -60,7 +60,6 @@ public abstract class Room {
         int chosenEnemy = random.nextInt(enemyIDArray.length);
         try {
             Node spawnNode = patrol.get(random.nextInt(patrol.size - 1)).firstNode();
-            System.out.println(spawnNode.position());
             switch (enemyIDArray[chosenEnemy]) {
                 case basicEnemy -> {
                     difficulty -= 1;
