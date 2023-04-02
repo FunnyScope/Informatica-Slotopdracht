@@ -4,3 +4,6 @@ De slotopdracht van informatica. We zijn van plan een console te maken, waarop e
 Om de game te starten moet het desktop-1.0-all.jar geopend worden. Deze staat in \desktop\build\libs
 # Moeilijkheidsgraad
 Op basis van mijn eigen tests, aardig moeilijk. Maar ik ben ook geen pro gamer.
+
+#logboek
+Niek: https://docs.google.com/spreadsheets/d/1D5Tykvixo9sFkVVzyQFK3gZYtjD3Ab1GrT7MyG9lj0s/edit?usp=sharing
