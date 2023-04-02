@@ -1,3 +1,11 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+mainClassName = 'com.eindopdracht.game.DesktopLauncher'
+
 sourceCompatibility = 1.16
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
@@ -7,7 +15,7 @@ project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
 
-task run(dependsOn: classes, type: JavaExec) {
+/*task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
@@ -18,7 +26,7 @@ task run(dependsOn: classes, type: JavaExec) {
         // Required to run on macOS
         jvmArgs += "-XstartOnFirstThread"
     }
-}
+}*/
 
 task debug(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -41,7 +49,62 @@ task dist(type: Jar) {
     with jar
 }
 
+apply plugin: 'java'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.eindopdracht.game.DesktopLauncher'
+    }
+    // onderstaande is nodig voor fatjar
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// fatjar or smth
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'com.baeldung.fatjar.Application'
+    }
+    baseName = 'all-in-one-jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 dist.dependsOn classes
 
 eclipse.project.name = appName + "-desktop"
+
+
+group = 'com.pi4j'
+version = '0.0.1'
+
+description = """Pi4J :: MINIMAL EXAMPLE :: Sample minimal project"""
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+plugins.withType(JavaPlugin).configureEach {
+    java {
+        modularity.inferModulePath = true
+    }
+}
+
+// Copy the Java modules, run script and JAR in the distribution directory
+tasks.register("copyDistribution", Copy) {
+    from configurations.default
+    from tasks.named('jar')
+    from layout.projectDirectory.file('assets/run.sh')
+    into layout.buildDirectory.dir('distribution')
+}
+tasks.named("build") {
+    dependsOn("copyDistribution")
+}
+
+// Dependencies for this application, until V2 is released, snapshot is required here
+repositories {
+    mavenCentral()
+}
+

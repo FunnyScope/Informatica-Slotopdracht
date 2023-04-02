@@ -29,7 +29,6 @@ public class InputHandler {
         float screenWidth = handler.hub.getViewport().getScreenWidth();
         float screenHeight = handler.hub.getViewport().getScreenHeight();
         Vector2 screenMiddle = new Vector2(screenWidth / 2, screenHeight / 2);
-
         Vector2 mousePositionRelativeToMiddle = new Vector2(
                 mousePosition.x - screenMiddle.x,
                 (mousePosition.y - screenMiddle.y)
